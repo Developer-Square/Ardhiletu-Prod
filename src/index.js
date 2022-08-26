@@ -13,19 +13,29 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import ThemeContextWrapper from "./components/ThemeWrapper/ThemeWrapper";
 import BackgroundColorWrapper from "./components/BackgroundColorWrapper/BackgroundColorWrapper";
 import LandingLayout from "layouts/Landing/Landing";
+import LoggedInUserWrapper from "components/LoggedInUserWrapper/LoggedInUserWrapper";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <ThemeContextWrapper>
-    <BackgroundColorWrapper>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact render={(props) => <LandingLayout {...props} />} />
-          <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-          <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
-        </Switch>
-      </BrowserRouter>
-    </BackgroundColorWrapper>
-  </ThemeContextWrapper>
+	<ThemeContextWrapper>
+		<BackgroundColorWrapper>
+			<LoggedInUserWrapper>
+				<BrowserRouter>
+					<Switch>
+						<Route
+							path='/'
+							exact
+							render={(props) => <LandingLayout {...props} />}
+						/>
+						<Route
+							path='/admin'
+							render={(props) => <AdminLayout {...props} />}
+						/>
+						<Route path='/rtl' render={(props) => <RTLLayout {...props} />} />
+					</Switch>
+				</BrowserRouter>
+			</LoggedInUserWrapper>
+		</BackgroundColorWrapper>
+	</ThemeContextWrapper>
 );

@@ -1,39 +1,52 @@
+import { LoggedInUserContext } from "contexts/LoggedInUserContext";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
 import "./landing.css";
 
-const Landing = () => {
+export default function Landing() {
 	const history = useHistory();
 
-    const handleRouting = () => {
-        history.push('/admin')
-    }
+	const handleRouting = (setCurrentUser, userType) => {
+		setCurrentUser(userType);
+		history.push("/admin");
+	};
 	return (
-		<div className='whoIsWatching'>
-			<div className='logo-section'>
-				<h1>ARDHILETU</h1>
-			</div>
+		<LoggedInUserContext.Consumer>
+			{({ changeUser }) => (
+				<div className='whoIsWatching'>
+					<div className='logo-section'>
+						<h1>ARDHILETU</h1>
+					</div>
 
-			<div className='main-div'>
-				<h2>Who's logging in?</h2>
-				<div className='memberDiv'>
-					<div className='user-btn'>
-						<button class='btn' onClick={() => handleRouting()}></button>
-						<span>Admin</span>
-					</div>
-					<div className='user-btn'>
-						<button class='btn btn-2' onClick={() => handleRouting()}></button>
-						<span>Buyer</span>
-					</div>
-					<div className='user-btn'>
-						<button class='btn btn-3' onClick={() => handleRouting()}></button>
-						<span>Seller</span>
+					<div className='main-div'>
+						<h2>Who's logging in?</h2>
+						<div className='memberDiv'>
+							<div className='user-btn'>
+								<button
+									className='btn'
+									onClick={() => handleRouting(changeUser, "admin")}
+								></button>
+								<span>Admin</span>
+							</div>
+							<div className='user-btn'>
+								<button
+									className='btn btn-2'
+									onClick={() => handleRouting(changeUser, "buyer")}
+								></button>
+								<span>Buyer</span>
+							</div>
+							<div className='user-btn'>
+								<button
+									className='btn btn-3'
+									onClick={() => handleRouting(changeUser, "seller")}
+								></button>
+								<span>Seller</span>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</LoggedInUserContext.Consumer>
 	);
-};
-
-export default Landing;
+}
