@@ -21,7 +21,7 @@ root.render(
     <BackgroundColorWrapper>
       <BrowserRouter>
         <Switch>
-          <Route path='/' render={(props) => <LandingLayout {...props} />} />
+          <Route path="/" exact render={(props) => <LandingLayout {...props} />} />
           <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
           <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
         </Switch>
