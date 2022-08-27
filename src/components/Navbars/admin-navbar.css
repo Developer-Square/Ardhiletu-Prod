@@ -1,0 +1,12 @@
+.nav-item {
+    font-size: 13px !important;
+    color: #000 !important;
+}
+
+.active {
+    background: linear-gradient(0deg, rgb(51, 88, 244) 0%, rgb(29, 140, 248) 100%);
+}
+
+.active.nav-item {
+    color: #fff !important;
+}
