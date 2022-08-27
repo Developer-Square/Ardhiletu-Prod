@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
 
-export default function TableRecords({ changeName }) {
+export default function TableRecords({ changeRecords }) {
 	return (
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
@@ -14,14 +14,14 @@ export default function TableRecords({ changeName }) {
 				</tr>
 			</thead>
 			<tbody>
-				<tr role='button' onClick={() => changeName("Joseph Kamau")}>
+				<tr role='button' onClick={() => changeRecords("Joseph Kamau")}>
 					<td>Joseph Kamau</td>
 					<td>34343323</td>
 					<td>KAJAIDO/LOODAH1AK/579</td>
 					<td className='text-center'>142</td>
 					<td className='text-center'>Ksh 834,534</td>
 				</tr>
-				<tr role='button' onClick={() => changeName("Alice Njoki")}>
+				<tr role='button' onClick={() => changeRecords("Alice Njoki")}>
 					<td>Alice Njoki</td>
 					<td>24794889</td>
 					<td>NAIROBI/LOODAH1AK/579</td>

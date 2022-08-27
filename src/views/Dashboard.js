@@ -34,9 +34,12 @@ function Dashboard() {
 								</CardHeader>
 								<CardBody>
 									{records === "" ? (
-										<TableRecords changeName={changeRecords} />
+										<TableRecords changeRecords={changeRecords} />
 									) : (
-										<SingleTableRecord fullName={records} />
+										<SingleTableRecord
+											records={records}
+											changeRecords={changeRecords}
+										/>
 									)}
 								</CardBody>
 							</Card>
