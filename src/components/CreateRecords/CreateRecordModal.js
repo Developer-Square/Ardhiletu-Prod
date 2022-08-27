@@ -28,14 +28,18 @@ export default function CreateRecordModal({
 				{modalType === "single" ? (
 					<CreateSingleRecord />
 				) : (
-					<CreateMultipleRecord />
+					<CreateMultipleRecord setShowModal={setShowModal} />
 				)}
 			</ModalBody>
-			<ModalFooter className='m-3 d-flex justify-content-end'>
-				<Button color='primary' className='modal-body-text'>
-					Save changes
-				</Button>
-			</ModalFooter>
+			{modalType === "single" ? (
+				<ModalFooter className='m-3 d-flex justify-content-end'>
+					<Button color='primary' className='modal-body-text'>
+						Save changes
+					</Button>
+				</ModalFooter>
+			) : (
+				<></>
+			)}
 		</Modal>
 	);
 }

@@ -30,7 +30,7 @@ function Dashboard() {
 	};
 	return (
 		<UserAndRecordsContext.Consumer>
-			{({ records, changeRecords }) => (
+			{({ records, importedHeaders, importedTableContent, changeRecords }) => (
 				<div className='content'>
 					<CreateRecordModal
 						showModal={showModal}
@@ -81,7 +81,11 @@ function Dashboard() {
 								</CardHeader>
 								<CardBody>
 									{records === "" ? (
-										<TableRecords changeRecords={changeRecords} />
+										<TableRecords
+											headers={importedHeaders}
+											tableContent={importedTableContent}
+											changeRecords={changeRecords}
+										/>
 									) : (
 										<SingleTableRecord
 											records={records}
