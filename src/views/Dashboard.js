@@ -1,18 +1,37 @@
+import React, { useState } from "react";
+// reactstrap components
+import {
+	Card,
+	CardHeader,
+	CardBody,
+	CardTitle,
+	Row,
+	Col,
+	UncontrolledDropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem,
+} from "reactstrap";
+
 import SingleTableRecord from "components/TableRecords/SingleTableRecord";
 import TableRecords from "components/TableRecords/TableRecords";
 import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
-import React from "react";
 
-// reactstrap components
-import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
+import "./dashboard.css";
+import CreateRecordModal from "components/CreateRecords/CreateRecordModal";
 
 function Dashboard() {
+	const [showModal, setShowModal] = useState(false);
 	return (
 		<UserAndRecordsContext.Consumer>
 			{({ records, changeRecords }) => (
 				<div className='content'>
-					<Row>
-						<Col lg='4'>
+					<CreateRecordModal
+						showModal={showModal}
+						setShowModal={setShowModal}
+					/>
+					<Row className='d-flex justify-content-between'>
+						<Col md='4'>
 							<Card className='card-chart'>
 								<CardHeader>
 									<h3 className='mb-2'>Credit Balance</h3>
@@ -22,6 +41,27 @@ function Dashboard() {
 									</CardTitle>
 								</CardHeader>
 							</Card>
+						</Col>
+						<Col md='4'>
+							<UncontrolledDropdown group className='float-right'>
+								<DropdownToggle caret color='info' data-toggle='dropdown'>
+									Create
+								</DropdownToggle>
+								<DropdownMenu>
+									<DropdownItem
+										className='text-dark font-weight-bold'
+										onClick={() => setShowModal(true)}
+									>
+										Create Multiple
+									</DropdownItem>
+									<DropdownItem
+										className='text-dark font-weight-bold'
+										onClick={() => setShowModal(true)}
+									>
+										Create Single
+									</DropdownItem>
+								</DropdownMenu>
+							</UncontrolledDropdown>
 						</Col>
 					</Row>
 					<Row>
