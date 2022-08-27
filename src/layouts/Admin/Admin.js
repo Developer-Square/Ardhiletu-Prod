@@ -89,7 +89,7 @@ function Admin(props) {
 		<BackgroundColorContext.Consumer>
 			{({ color, changeColor }) => (
 				<LoggedInUserContext.Consumer>
-					{({ user }) => (
+					{({ user, changeUser }) => (
 						<React.Fragment>
 							<div className='wrapper'>
 								<Sidebar
@@ -106,6 +106,8 @@ function Admin(props) {
 										brandText={getBrandText(location.pathname)}
 										toggleSidebar={toggleSidebar}
 										sidebarOpened={sidebarOpened}
+										user={user}
+										changeUser={changeUser}
 									/>
 									<Switch>
 										{getRoutes(routes)}

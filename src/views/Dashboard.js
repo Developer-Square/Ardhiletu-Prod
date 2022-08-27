@@ -11,11 +11,7 @@ import {
 	Col,
 } from "reactstrap";
 
-function Dashboard(props) {
-	const [bigChartData, setbigChartData] = React.useState("data1");
-	const setBgChartData = (name) => {
-		setbigChartData(name);
-	};
+function Dashboard() {
 	return (
 		<>
 			<div className='content'>
