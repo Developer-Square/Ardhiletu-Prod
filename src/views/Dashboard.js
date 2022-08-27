@@ -22,6 +22,12 @@ import CreateRecordModal from "components/CreateRecords/CreateRecordModal";
 
 function Dashboard() {
 	const [showModal, setShowModal] = useState(false);
+	const [modalType, setModalType] = useState("");
+
+	const handleModal = (type) => {
+		setShowModal(true);
+		setModalType(type);
+	};
 	return (
 		<UserAndRecordsContext.Consumer>
 			{({ records, changeRecords }) => (
@@ -29,6 +35,7 @@ function Dashboard() {
 					<CreateRecordModal
 						showModal={showModal}
 						setShowModal={setShowModal}
+						modalType={modalType}
 					/>
 					<Row className='d-flex justify-content-between'>
 						<Col md='4'>
@@ -50,13 +57,13 @@ function Dashboard() {
 								<DropdownMenu>
 									<DropdownItem
 										className='text-dark font-weight-bold'
-										onClick={() => setShowModal(true)}
+										onClick={() => handleModal("multiple")}
 									>
 										Create Multiple
 									</DropdownItem>
 									<DropdownItem
 										className='text-dark font-weight-bold'
-										onClick={() => setShowModal(true)}
+										onClick={() => handleModal("single")}
 									>
 										Create Single
 									</DropdownItem>

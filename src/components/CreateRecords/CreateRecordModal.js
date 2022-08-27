@@ -1,12 +1,18 @@
 import React from "react";
 import { Modal, ModalBody, ModalFooter, Button } from "reactstrap";
+import CreateMultipleRecord from "./CreateMultipleRecord";
+import CreateSingleRecord from "./CreateSingleRecord";
 
-export default function CreateRecordModal({ showModal, setShowModal }) {
+export default function CreateRecordModal({
+	showModal,
+	setShowModal,
+	modalType,
+}) {
 	return (
 		<Modal isOpen={showModal} toggle={setShowModal}>
 			<div className='modal-header'>
 				<h3 className='modal-title' id='exampleModalLabel'>
-					Modal title
+					Create a Single Record
 				</h3>
 				<button
 					type='button'
@@ -19,10 +25,16 @@ export default function CreateRecordModal({ showModal, setShowModal }) {
 				</button>
 			</div>
 			<ModalBody>
-				<p className='modal-body-text'>Upload from computer</p>
+				{modalType === "single" ? (
+					<CreateSingleRecord />
+				) : (
+					<CreateMultipleRecord />
+				)}
 			</ModalBody>
 			<ModalFooter className='m-3 d-flex justify-content-end'>
-				<Button color='primary'>Save changes</Button>
+				<Button color='primary' className='modal-body-text'>
+					Save changes
+				</Button>
 			</ModalFooter>
 		</Modal>
 	);
