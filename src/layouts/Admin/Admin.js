@@ -10,7 +10,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
 
 import { BackgroundColorContext } from "contexts/BackgroundColorContext";
-import { LoggedInUserContext } from "contexts/LoggedInUserContext";
+import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 
 var ps;
 
@@ -84,8 +84,8 @@ function Admin() {
 	};
 	return (
 		<BackgroundColorContext.Consumer>
-			{({ color, changeColor }) => (
-				<LoggedInUserContext.Consumer>
+			{({ color }) => (
+				<UserAndRecordsContext.Consumer>
 					{({ user, changeUser }) => (
 						<React.Fragment>
 							<div className='wrapper'>
@@ -106,7 +106,7 @@ function Admin() {
 							</div>
 						</React.Fragment>
 					)}
-				</LoggedInUserContext.Consumer>
+				</UserAndRecordsContext.Consumer>
 			)}
 		</BackgroundColorContext.Consumer>
 	);

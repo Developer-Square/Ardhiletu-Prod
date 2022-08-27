@@ -12,14 +12,14 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import ThemeContextWrapper from "./components/ThemeWrapper/ThemeWrapper";
 import BackgroundColorWrapper from "./components/BackgroundColorWrapper/BackgroundColorWrapper";
 import LandingLayout from "layouts/Landing/Landing";
-import LoggedInUserWrapper from "components/LoggedInUserWrapper/LoggedInUserWrapper";
+import UserAndRecordsWrapper from "components/UserAndRecordsWrapper/UserAndRecordsWrapper";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
 	<ThemeContextWrapper>
 		<BackgroundColorWrapper>
-			<LoggedInUserWrapper>
+			<UserAndRecordsWrapper>
 				<BrowserRouter>
 					<Switch>
 						<Route
@@ -33,7 +33,7 @@ root.render(
 						/>
 					</Switch>
 				</BrowserRouter>
-			</LoggedInUserWrapper>
+			</UserAndRecordsWrapper>
 		</BackgroundColorWrapper>
 	</ThemeContextWrapper>
 );

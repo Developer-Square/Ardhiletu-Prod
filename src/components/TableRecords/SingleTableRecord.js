@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
 
-export default function SingleTableRecord() {
+export default function SingleTableRecord({ fullName }) {
 	return (
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
@@ -16,14 +16,8 @@ export default function SingleTableRecord() {
 				<tr>
 					<td>Transfer</td>
 					<td>James Orengo</td>
-					<td>Joseph Kamau</td>
+					<td>{fullName}</td>
 					<td className='text-center'>2 weeks ago</td>
-				</tr>
-				<tr>
-					<td>Transfer</td>
-					<td>Phylis Wairimu</td>
-					<td>Alice Njoki</td>
-					<td className='text-center'>3 months ago</td>
 				</tr>
 			</tbody>
 		</Table>

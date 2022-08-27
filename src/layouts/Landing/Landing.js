@@ -1,4 +1,4 @@
-import { LoggedInUserContext } from "contexts/LoggedInUserContext";
+import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
@@ -12,7 +12,7 @@ export default function Landing() {
 		history.push("/admin");
 	};
 	return (
-		<LoggedInUserContext.Consumer>
+		<UserAndRecordsContext.Consumer>
 			{({ changeUser }) => (
 				<div className='whoIsWatching'>
 					<div className='logo-section'>
@@ -47,6 +47,6 @@ export default function Landing() {
 					</div>
 				</div>
 			)}
-		</LoggedInUserContext.Consumer>
+		</UserAndRecordsContext.Consumer>
 	);
 }
