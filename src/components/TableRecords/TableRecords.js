@@ -6,11 +6,9 @@ export default function TableRecords({ changeRecords, headers, tableContent }) {
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
 				<tr>
-					<th>Name</th>
-					<th>National ID</th>
-					<th>Land Reference No.</th>
-					<th className='text-center'>Size(Acres)</th>
-					<th>Price</th>
+					{headers.map((title, index) => (
+						<th key={index}>{title}</th>
+					))}
 				</tr>
 			</thead>
 			<tbody>
@@ -18,7 +16,9 @@ export default function TableRecords({ changeRecords, headers, tableContent }) {
 					<tr
 						role='button'
 						key={index}
-						onClick={() => changeRecords(content["Full Name"])}
+						onClick={() =>
+							changeRecords(content["Full Name"], Object.values(content).pop())
+						}
 					>
 						{Object.values(content).map((item, index) => (
 							<td key={index} className={`${index === 3 ? "text-center" : ""}`}>
