@@ -18,14 +18,24 @@ import {
 	Modal,
 	NavbarToggler,
 	ModalHeader,
+	InputGroup,
+	Button,
 } from "reactstrap";
 
 import "./admin-navbar.css";
+import { useHistory } from "react-router-dom";
 
-function AdminNavbar(props) {
+function AdminNavbar({
+	brandText,
+	sidebarOpened,
+	changeUser,
+	loggedInUser,
+	toggleSidebar,
+}) {
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const [modalSearch, setmodalSearch] = React.useState(false);
 	const [color, setcolor] = React.useState("navbar-transparent");
+	const history = useHistory();
 	React.useEffect(() => {
 		window.addEventListener("resize", updateColor);
 		// Specify how to clean up after this effect:
@@ -33,6 +43,11 @@ function AdminNavbar(props) {
 			window.removeEventListener("resize", updateColor);
 		};
 	});
+
+	React.useEffect(() => {
+		// Open the search when the dashboard is first loaded.
+		setmodalSearch(true);
+	}, []);
 	// function that adds color white/transparent to the navbar on resize (this is for the collapse)
 	const updateColor = () => {
 		if (window.innerWidth < 993 && collapseOpen) {
@@ -54,6 +69,11 @@ function AdminNavbar(props) {
 	const toggleModalSearch = () => {
 		setmodalSearch(!modalSearch);
 	};
+
+	const handleSignOut = () => {
+		changeUser("");
+		history.push("/");
+	};
 	return (
 		<>
 			<Navbar className={classNames("navbar-absolute", color)} expand='lg'>
@@ -61,17 +81,17 @@ function AdminNavbar(props) {
 					<div className='navbar-wrapper'>
 						<div
 							className={classNames("navbar-toggle d-inline", {
-								toggled: props.sidebarOpened,
+								toggled: sidebarOpened,
 							})}
 						>
-							<NavbarToggler onClick={props.toggleSidebar}>
+							<NavbarToggler onClick={toggleSidebar}>
 								<span className='navbar-toggler-bar bar1' />
 								<span className='navbar-toggler-bar bar2' />
 								<span className='navbar-toggler-bar bar3' />
 							</NavbarToggler>
 						</div>
 						<NavbarBrand href='#pablo' onClick={(e) => e.preventDefault()}>
-							{props.brandText}
+							{brandText}
 						</NavbarBrand>
 					</div>
 					<NavbarToggler onClick={toggleCollapse}>
@@ -80,7 +100,13 @@ function AdminNavbar(props) {
 						<span className='navbar-toggler-bar navbar-kebab' />
 					</NavbarToggler>
 					<Collapse navbar isOpen={collapseOpen}>
-						<Nav className='ml-auto' navbar>
+						<Nav className='ml-auto here' navbar>
+							<InputGroup className='search-bar'>
+								<Button color='link' onClick={toggleModalSearch}>
+									<i className='tim-icons icon-zoom-split' />
+									<span className='d-lg-none d-md-block'>Search</span>
+								</Button>
+							</InputGroup>
 							<UncontrolledDropdown nav>
 								<DropdownToggle
 									caret
@@ -98,9 +124,9 @@ function AdminNavbar(props) {
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												props.user === "admin" ? "active" : ""
+												loggedInUser.role === "admin" ? "active" : ""
 											}`}
-											onClick={() => props.changeUser("admin")}
+											onClick={() => changeUser("admin", "Anthony Kimani")}
 										>
 											Admin
 										</DropdownItem>
@@ -108,9 +134,9 @@ function AdminNavbar(props) {
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												props.user === "buyer" ? "active" : ""
+												loggedInUser.role === "buyer" ? "active" : ""
 											}`}
-											onClick={() => props.changeUser("buyer")}
+											onClick={() => changeUser("buyer", "Linton Wambua")}
 										>
 											Buyer
 										</DropdownItem>
@@ -119,11 +145,16 @@ function AdminNavbar(props) {
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												props.user === "seller" ? "active" : ""
+												loggedInUser.role === "seller" ? "active" : ""
 											}`}
-											onClick={() => props.changeUser("seller")}
+											onClick={() => changeUser("seller", "Mary Waithaka")}
 										>
 											Seller
+										</DropdownItem>
+									</NavLink>
+									<NavLink tag='li'>
+										<DropdownItem onClick={() => handleSignOut()}>
+											Sign Out
 										</DropdownItem>
 									</NavLink>
 								</DropdownMenu>

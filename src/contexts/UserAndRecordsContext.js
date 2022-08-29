@@ -1,11 +1,13 @@
 import { createContext } from "react";
 
 export const UserAndRecordsContext = createContext({
-	loggedInUser: "",
-	records: "",
+	loggedInUser: { role: "", fullName: "" },
+	records: { name: "", price: "" },
 	importedHeaders: [],
 	importedTableContent: [],
+	userBalance: "0",
+	changeBalance: (balance) => {},
 	changeImportedDetails: (headers, content) => {},
-	changeRecords: (record) => {},
-	changeUser: (user) => {},
+	changeRecords: (name, price) => {},
+	changeUser: (role, fullName) => {},
 });

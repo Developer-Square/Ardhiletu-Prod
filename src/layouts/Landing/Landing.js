@@ -7,8 +7,8 @@ import "./landing.css";
 export default function Landing() {
 	const history = useHistory();
 
-	const handleRouting = (setCurrentUser, userType) => {
-		setCurrentUser(userType);
+	const handleRouting = (setCurrentUser, userType, fullName) => {
+		setCurrentUser(userType, fullName);
 		history.push("/admin");
 	};
 	return (
@@ -25,21 +25,27 @@ export default function Landing() {
 							<div className='user-btn'>
 								<button
 									className='btn'
-									onClick={() => handleRouting(changeUser, "admin")}
+									onClick={() =>
+										handleRouting(changeUser, "admin", "Anthony Kimani")
+									}
 								></button>
 								<span>Admin</span>
 							</div>
 							<div className='user-btn'>
 								<button
 									className='btn btn-2'
-									onClick={() => handleRouting(changeUser, "buyer")}
+									onClick={() =>
+										handleRouting(changeUser, "buyer", "Linton Wambua")
+									}
 								></button>
 								<span>Buyer</span>
 							</div>
 							<div className='user-btn'>
 								<button
 									className='btn btn-3'
-									onClick={() => handleRouting(changeUser, "seller")}
+									onClick={() =>
+										handleRouting(changeUser, "seller", "Mary Waithaka")
+									}
 								></button>
 								<span>Seller</span>
 							</div>
