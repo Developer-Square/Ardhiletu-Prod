@@ -1,33 +1,16 @@
 import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 
-export default function CreateSingleRecord() {
+export default function CreateSingleRecord({
+	landSize,
+	landTitle,
+	price,
+	setLandSize,
+	setLandTitle,
+	setPrice,
+}) {
 	return (
 		<>
-			<FormGroup>
-				<Label for='name' className='form-title'>
-					Name
-				</Label>
-				<Input
-					type='text'
-					name='name'
-					id='name'
-					placeholder='Enter full name'
-					className='form-title'
-				/>
-			</FormGroup>
-			<FormGroup>
-				<Label for='id' className='form-title'>
-					National Id
-				</Label>
-				<Input
-					type='text'
-					name='id'
-					id='id'
-					placeholder='Enter national id'
-					className='form-title'
-				/>
-			</FormGroup>
 			<FormGroup>
 				<Label for='land-title' className='form-title'>
 					Land Title
@@ -36,6 +19,8 @@ export default function CreateSingleRecord() {
 					type='text'
 					name='land-title'
 					id='land-title'
+					value={landTitle}
+					onChange={(e) => setLandTitle(e.target.value)}
 					placeholder='Enter land title'
 					className='form-title'
 				/>
@@ -48,6 +33,8 @@ export default function CreateSingleRecord() {
 					type='text'
 					name='land-size'
 					id='land-size'
+					value={landSize}
+					onChange={(e) => setLandSize(e.target.value)}
 					placeholder='Enter land size(Acres)'
 					className='form-title'
 				/>
@@ -60,6 +47,8 @@ export default function CreateSingleRecord() {
 					type='text'
 					name='price'
 					id='price'
+					value={price}
+					onChange={(e) => setPrice(e.target.value)}
 					placeholder='Enter your price'
 					className='form-title'
 				/>
