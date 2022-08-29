@@ -28,7 +28,6 @@ function Dashboard() {
 	const { userBalance, changeBalance, loggedInUser } = useContext(
 		UserAndRecordsContext
 	);
-	console.log(loggedInUser);
 
 	const handleModal = (type) => {
 		setShowModal(true);
@@ -72,27 +71,29 @@ function Dashboard() {
 								</CardHeader>
 							</Card>
 						</Col>
-						<Col md='4'>
-							<UncontrolledDropdown group className='float-right'>
-								<DropdownToggle caret color='info' data-toggle='dropdown'>
-									Create
-								</DropdownToggle>
-								<DropdownMenu>
-									<DropdownItem
-										className='text-dark font-weight-bold'
-										onClick={() => handleModal("multiple")}
-									>
-										Create Multiple
-									</DropdownItem>
-									<DropdownItem
-										className='text-dark font-weight-bold'
-										onClick={() => handleModal("single")}
-									>
-										Create Single
-									</DropdownItem>
-								</DropdownMenu>
-							</UncontrolledDropdown>
-						</Col>
+						{loggedInUser.role === "admin" ? (
+							<Col md='4'>
+								<UncontrolledDropdown group className='float-right'>
+									<DropdownToggle caret color='info' data-toggle='dropdown'>
+										Create
+									</DropdownToggle>
+									<DropdownMenu>
+										<DropdownItem
+											className='text-dark font-weight-bold'
+											onClick={() => handleModal("multiple")}
+										>
+											Create Multiple
+										</DropdownItem>
+										<DropdownItem
+											className='text-dark font-weight-bold'
+											onClick={() => handleModal("single")}
+										>
+											Create Single
+										</DropdownItem>
+									</DropdownMenu>
+								</UncontrolledDropdown>
+							</Col>
+						) : null}
 					</Row>
 					<Row>
 						<Col md='12'>

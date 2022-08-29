@@ -1,4 +1,5 @@
-import React from "react";
+import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
+import React, { useContext } from "react";
 
 // reactstrap components
 import {
@@ -16,6 +17,7 @@ import {
 } from "reactstrap";
 
 function UserProfile() {
+	const { loggedInUser } = useContext(UserAndRecordsContext);
 	return (
 		<>
 			<div className='content'>
@@ -43,7 +45,7 @@ function UserProfile() {
 											<FormGroup>
 												<label>Username</label>
 												<Input
-													defaultValue='michael23'
+													defaultValue={`${loggedInUser.fullName}`}
 													placeholder='Username'
 													type='text'
 												/>
@@ -54,7 +56,10 @@ function UserProfile() {
 												<label htmlFor='exampleInputEmail1'>
 													Email address
 												</label>
-												<Input placeholder='mike@email.com' type='email' />
+												<Input
+													placeholder={`${loggedInUser.fullName}@email.com`}
+													type='email'
+												/>
 											</FormGroup>
 										</Col>
 									</Row>
@@ -97,7 +102,7 @@ function UserProfile() {
 											<FormGroup>
 												<label>City</label>
 												<Input
-													defaultValue='Mike'
+													defaultValue='Nairobi'
 													placeholder='City'
 													type='text'
 												/>
@@ -107,7 +112,7 @@ function UserProfile() {
 											<FormGroup>
 												<label>Country</label>
 												<Input
-													defaultValue='Andrew'
+													defaultValue='Kenya'
 													placeholder='Country'
 													type='text'
 												/>
@@ -126,8 +131,7 @@ function UserProfile() {
 												<label>About Me</label>
 												<Input
 													cols='80'
-													defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                            that two seat Lambo."
+													defaultValue='Looking for love in this cruel city!'
 													placeholder='Here can be your description'
 													rows='4'
 													type='textarea'
@@ -157,31 +161,13 @@ function UserProfile() {
 										<img
 											alt='...'
 											className='avatar'
-											src={require("assets/img/emilyz.jpg")}
+											src={require("assets/img/anime3.png")}
 										/>
-										<h5 className='title'>Mike Andrew</h5>
+										<h5 className='title'>{loggedInUser.fullName}</h5>
 									</a>
-									<p className='description'>Ceo/Co-Founder</p>
-								</div>
-								<div className='card-description'>
-									Do not be scared of the truth because we need to restart the
-									human foundation in truth And I love you like Kanye loves
-									Kanye I love Rick Owens’ bed design but the back is...
+									<p className='description'>{loggedInUser.role}</p>
 								</div>
 							</CardBody>
-							<CardFooter>
-								<div className='button-container'>
-									<Button className='btn-icon btn-round' color='facebook'>
-										<i className='fab fa-facebook' />
-									</Button>
-									<Button className='btn-icon btn-round' color='twitter'>
-										<i className='fab fa-twitter' />
-									</Button>
-									<Button className='btn-icon btn-round' color='google'>
-										<i className='fab fa-google-plus' />
-									</Button>
-								</div>
-							</CardFooter>
 						</Card>
 					</Col>
 				</Row>
