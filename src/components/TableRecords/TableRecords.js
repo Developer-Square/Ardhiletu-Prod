@@ -1,6 +1,8 @@
 import React from "react";
 import { Table } from "reactstrap";
 
+import "./table-record.css";
+
 export default function TableRecords({ changeRecords, headers, tableContent }) {
 	return (
 		<Table className='tablesorter' responsive>
@@ -12,21 +14,33 @@ export default function TableRecords({ changeRecords, headers, tableContent }) {
 				</tr>
 			</thead>
 			<tbody>
-				{tableContent.map((content, index) => (
-					<tr
-						role='button'
-						key={index}
-						onClick={() =>
-							changeRecords(content["Full Name"], Object.values(content).pop())
-						}
-					>
-						{Object.values(content).map((item, index) => (
-							<td key={index} className={`${index === 3 ? "text-center" : ""}`}>
-								{item}
-							</td>
-						))}
+				{tableContent.length ? (
+					tableContent.map((content, index) => (
+						<tr
+							role='button'
+							key={index}
+							onClick={() =>
+								changeRecords(
+									content["Full Name"],
+									Object.values(content).pop()
+								)
+							}
+						>
+							{Object.values(content).map((item, index) => (
+								<td
+									key={index}
+									className={`${index === 3 ? "text-center" : ""}`}
+								>
+									{item}
+								</td>
+							))}
+						</tr>
+					))
+				) : (
+					<tr className='no-results'>
+						<strong>No Results. Try Searching...</strong>
 					</tr>
-				))}
+				)}
 			</tbody>
 		</Table>
 	);

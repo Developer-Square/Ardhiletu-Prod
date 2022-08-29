@@ -18,14 +18,18 @@ import {
 	Modal,
 	NavbarToggler,
 	ModalHeader,
+	InputGroup,
+	Button,
 } from "reactstrap";
 
 import "./admin-navbar.css";
+import { useHistory } from "react-router-dom";
 
 function AdminNavbar(props) {
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const [modalSearch, setmodalSearch] = React.useState(false);
 	const [color, setcolor] = React.useState("navbar-transparent");
+	const history = useHistory();
 	React.useEffect(() => {
 		window.addEventListener("resize", updateColor);
 		// Specify how to clean up after this effect:
@@ -33,6 +37,11 @@ function AdminNavbar(props) {
 			window.removeEventListener("resize", updateColor);
 		};
 	});
+
+	React.useEffect(() => {
+		// Open the search when the dashboard is first loaded.
+		setmodalSearch(true);
+	}, []);
 	// function that adds color white/transparent to the navbar on resize (this is for the collapse)
 	const updateColor = () => {
 		if (window.innerWidth < 993 && collapseOpen) {
@@ -53,6 +62,11 @@ function AdminNavbar(props) {
 	// this function is to open the Search modal
 	const toggleModalSearch = () => {
 		setmodalSearch(!modalSearch);
+	};
+
+	const handleSignOut = () => {
+		props.changeUser("");
+		history("/");
 	};
 	return (
 		<>
@@ -80,7 +94,13 @@ function AdminNavbar(props) {
 						<span className='navbar-toggler-bar navbar-kebab' />
 					</NavbarToggler>
 					<Collapse navbar isOpen={collapseOpen}>
-						<Nav className='ml-auto' navbar>
+						<Nav className='ml-auto here' navbar>
+							<InputGroup className='search-bar'>
+								<Button color='link' onClick={toggleModalSearch}>
+									<i className='tim-icons icon-zoom-split' />
+									<span className='d-lg-none d-md-block'>Search</span>
+								</Button>
+							</InputGroup>
 							<UncontrolledDropdown nav>
 								<DropdownToggle
 									caret
@@ -124,6 +144,11 @@ function AdminNavbar(props) {
 											onClick={() => props.changeUser("seller")}
 										>
 											Seller
+										</DropdownItem>
+									</NavLink>
+									<NavLink tag='li'>
+										<DropdownItem onClick={() => handleSignOut()}>
+											Sign Out
 										</DropdownItem>
 									</NavLink>
 								</DropdownMenu>
