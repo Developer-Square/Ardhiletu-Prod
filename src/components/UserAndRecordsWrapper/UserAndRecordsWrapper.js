@@ -3,13 +3,15 @@ import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 
 export default function UserAndRecordsWrapper(props) {
 	const [user, setUser] = useState("");
+	const [role, setRole] = useState("");
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState("");
 	const [userBalance, setUserBalance] = useState("0");
 	const [importedHeaders, setImportedHeaders] = useState([]);
 	const [importedTableContent, setImportedTableContent] = useState([]);
 
-	function changeUser(user) {
+	function changeUser(role, user) {
+		setRole(role);
 		setUser(user);
 	}
 
@@ -30,7 +32,7 @@ export default function UserAndRecordsWrapper(props) {
 	return (
 		<UserAndRecordsContext.Provider
 			value={{
-				user: user,
+				loggedInUser: { role: role, fullName: user },
 				records: { name: name, price: price },
 				importedHeaders: importedHeaders,
 				importedTableContent: importedTableContent,

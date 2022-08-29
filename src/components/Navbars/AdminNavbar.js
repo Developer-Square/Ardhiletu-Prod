@@ -25,7 +25,13 @@ import {
 import "./admin-navbar.css";
 import { useHistory } from "react-router-dom";
 
-function AdminNavbar(props) {
+function AdminNavbar({
+	brandText,
+	sidebarOpened,
+	changeUser,
+	loggedInUser,
+	toggleSidebar,
+}) {
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const [modalSearch, setmodalSearch] = React.useState(false);
 	const [color, setcolor] = React.useState("navbar-transparent");
@@ -65,8 +71,8 @@ function AdminNavbar(props) {
 	};
 
 	const handleSignOut = () => {
-		props.changeUser("");
-		history("/");
+		changeUser("");
+		history.push("/");
 	};
 	return (
 		<>
@@ -75,17 +81,17 @@ function AdminNavbar(props) {
 					<div className='navbar-wrapper'>
 						<div
 							className={classNames("navbar-toggle d-inline", {
-								toggled: props.sidebarOpened,
+								toggled: sidebarOpened,
 							})}
 						>
-							<NavbarToggler onClick={props.toggleSidebar}>
+							<NavbarToggler onClick={toggleSidebar}>
 								<span className='navbar-toggler-bar bar1' />
 								<span className='navbar-toggler-bar bar2' />
 								<span className='navbar-toggler-bar bar3' />
 							</NavbarToggler>
 						</div>
 						<NavbarBrand href='#pablo' onClick={(e) => e.preventDefault()}>
-							{props.brandText}
+							{brandText}
 						</NavbarBrand>
 					</div>
 					<NavbarToggler onClick={toggleCollapse}>
@@ -118,9 +124,9 @@ function AdminNavbar(props) {
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												props.user === "admin" ? "active" : ""
+												loggedInUser.role === "admin" ? "active" : ""
 											}`}
-											onClick={() => props.changeUser("admin")}
+											onClick={() => changeUser("admin", "Anthony Kimani")}
 										>
 											Admin
 										</DropdownItem>
@@ -128,9 +134,9 @@ function AdminNavbar(props) {
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												props.user === "buyer" ? "active" : ""
+												loggedInUser.role === "buyer" ? "active" : ""
 											}`}
-											onClick={() => props.changeUser("buyer")}
+											onClick={() => changeUser("buyer", "Linton Wambua")}
 										>
 											Buyer
 										</DropdownItem>
@@ -139,9 +145,9 @@ function AdminNavbar(props) {
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												props.user === "seller" ? "active" : ""
+												loggedInUser.role === "seller" ? "active" : ""
 											}`}
-											onClick={() => props.changeUser("seller")}
+											onClick={() => changeUser("seller", "Mary Waithaka")}
 										>
 											Seller
 										</DropdownItem>

@@ -25,7 +25,10 @@ import CreateRecordModal from "components/CreateRecords/CreateRecordModal";
 function Dashboard() {
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState("");
-	const { userBalance, changeBalance } = useContext(UserAndRecordsContext);
+	const { userBalance, changeBalance, loggedInUser } = useContext(
+		UserAndRecordsContext
+	);
+	console.log(loggedInUser);
 
 	const handleModal = (type) => {
 		setShowModal(true);

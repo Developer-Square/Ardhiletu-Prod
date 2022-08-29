@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 export const UserAndRecordsContext = createContext({
-	loggedInUser: "",
+	loggedInUser: { role: "", fullName: "" },
 	records: { name: "", price: "" },
 	importedHeaders: [],
 	importedTableContent: [],
@@ -9,5 +9,5 @@ export const UserAndRecordsContext = createContext({
 	changeBalance: (balance) => {},
 	changeImportedDetails: (headers, content) => {},
 	changeRecords: (name, price) => {},
-	changeUser: (user) => {},
+	changeUser: (role, fullName) => {},
 });
