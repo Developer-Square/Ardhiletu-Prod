@@ -21,7 +21,7 @@ export default function TableRecords({ tableContent }) {
 						<tr
 							role='button'
 							key={index}
-							onClick={() => changeId(content["hash"])}
+							onClick={() => changeId(content["referenceNumber"])}
 						>
 							{Object.values(content).map((item, index) => (
 								<td
