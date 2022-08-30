@@ -1,22 +1,37 @@
 import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Table, Button } from "reactstrap";
 
-export default function SingleTableRecord({ records, changeRecords }) {
-	const { userBalance, changeBalance } = useContext(UserAndRecordsContext);
-	const handleLandBuy = () => {
-		const balanceToInt = parseInt(userBalance.replaceAll(",", ""));
-		const actualPrice = parseFloat(records.price) * 1000000;
+export default function SingleTableRecord() {
+	const [event, setEvent] = useState("");
+	const [from, setFrom] = useState("");
+	const [to, setTo] = useState("");
+	const { singeRecordId, changeId, records } = useContext(
+		UserAndRecordsContext
+	);
 
-		if (balanceToInt > actualPrice) {
-			const newBalance = balanceToInt - actualPrice;
-			toast.success("Succesfully bought the land");
-			changeBalance(newBalance);
-		} else {
-			toast.error("Purchased failed, kindly check your balance");
-		}
-	};
+	// useEffect(() => {
+	// 	if (records.length > 0) {
+	// 		records.map(record => {
+	// 			if (record.hash === singeRecordId) {
+	// 				setFrom(record.owner)
+
+	// 			}
+	// 		})
+	// 	}
+	// }, []);
+	// const handleLandBuy = () => {
+	// 	const balanceToInt = parseInt(userBalance.replaceAll(",", ""));
+	// 	const actualPrice = parseFloat(0.1) * 1000000;
+
+	// 	if (balanceToInt > actualPrice) {
+	// 		const newBalance = balanceToInt - actualPrice;
+	// 		toast.success("Succesfully bought the land");
+	// 	} else {
+	// 		toast.error("Purchased failed, kindly check your balance");
+	// 	}
+	// };
 
 	return (
 		<>
@@ -31,9 +46,9 @@ export default function SingleTableRecord({ records, changeRecords }) {
 				</thead>
 				<tbody>
 					<tr>
-						<td>Transfer</td>
-						<td>James Orengo</td>
-						<td>{records.name}</td>
+						<td>{event}</td>
+						<td>{from}</td>
+						<td>{to}</td>
 						<td className='text-center'>2 weeks ago</td>
 					</tr>
 				</tbody>
@@ -42,15 +57,11 @@ export default function SingleTableRecord({ records, changeRecords }) {
 				<Button
 					color='danger'
 					className='animation-on-hover'
-					onClick={() => changeRecords("", "")}
+					onClick={() => changeId("")}
 				>
 					Go Back
 				</Button>
-				<Button
-					color='success'
-					className='animation-on-hover'
-					onClick={handleLandBuy}
-				>
+				<Button color='success' className='animation-on-hover'>
 					Buy
 				</Button>
 			</div>

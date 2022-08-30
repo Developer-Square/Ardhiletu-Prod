@@ -33,6 +33,7 @@ function Dashboard() {
 		loggedInUser,
 		importedTableContent,
 		changeImportedDetails,
+		singeRecordId,
 	} = useContext(UserAndRecordsContext);
 
 	const handleModal = (type) => {
@@ -46,14 +47,21 @@ function Dashboard() {
 		const results = data.slice(1);
 		const cleanedResults = [];
 		results.map((item) => {
-			cleanedResults.push({
-				referenceNumber: item.referenceNumber,
-				size: item.size,
-				price: item.price,
-			});
+			if (!cleanedResults.includes(item.referenceNumber))
+				cleanedResults.push({
+					referenceNumber: item.referenceNumber,
+					size: item.size,
+					price: item.price,
+				});
 			return null;
 		});
-		changeImportedDetails(cleanedResults);
+		// Remove all the duplicates
+		const uniqueResults = [
+			...new Map(
+				cleanedResults.map((result) => [result.referenceNumber, result])
+			).values(),
+		];
+		changeImportedDetails(uniqueResults);
 	};
 
 	const fetchLandRecords = () => {
@@ -144,7 +152,7 @@ function Dashboard() {
 									</CardTitle>
 								</CardHeader>
 								<CardBody>
-									{records.name === "" ? (
+									{singeRecordId === "" ? (
 										<TableRecords
 											tableContent={importedTableContent}
 											changeRecords={changeRecords}

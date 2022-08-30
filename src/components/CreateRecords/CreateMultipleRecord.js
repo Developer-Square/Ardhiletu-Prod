@@ -33,6 +33,16 @@ export default function CreateMultipleRecord({ setShowModal }) {
 			});
 	};
 
+	const removeForwardSlash = (title) => {
+		const result = title.replaceAll("/", "");
+		return result;
+	};
+
+	const convertToRealPrice = (amount) => {
+		const actualPrice = parseFloat(amount) * 1000000;
+		return actualPrice;
+	};
+
 	const csvFileToArray = (string, changeImportedDetails) => {
 		const csvHeader = string.slice(0, string.indexOf("\n")).split(",");
 		const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
@@ -49,9 +59,9 @@ export default function CreateMultipleRecord({ setShowModal }) {
 		const userDetails = [];
 		array.map((land) => {
 			landDetails.push({
-				referenceNumber: land["Land Title"],
+				referenceNumber: removeForwardSlash(land["Land Title"]),
 				size: land["Land Size(Acres)"],
-				price: Object.values(land).pop(),
+				price: convertToRealPrice(Object.values(land).pop()),
 			});
 			userDetails.push({
 				name: land["Full Name"],

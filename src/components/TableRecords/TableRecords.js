@@ -1,9 +1,11 @@
-import React from "react";
+import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
+import React, { useContext } from "react";
 import { Table } from "reactstrap";
 
 import "./table-record.css";
 
-export default function TableRecords({ changeRecords, tableContent }) {
+export default function TableRecords({ tableContent }) {
+	const { changeId } = useContext(UserAndRecordsContext);
 	return (
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
@@ -19,12 +21,7 @@ export default function TableRecords({ changeRecords, tableContent }) {
 						<tr
 							role='button'
 							key={index}
-							onClick={() =>
-								changeRecords(
-									content["Full Name"],
-									Object.values(content).pop()
-								)
-							}
+							onClick={() => changeId(content["hash"])}
 						>
 							{Object.values(content).map((item, index) => (
 								<td
