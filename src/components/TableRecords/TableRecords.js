@@ -8,9 +8,11 @@ export default function TableRecords({ changeRecords, headers, tableContent }) {
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
 				<tr>
-					{headers.map((title, index) => (
-						<th key={index}>{title}</th>
-					))}
+					<th>FULL NAME</th>
+					<th>NATIONAL ID</th>
+					<th>LAND TITLE</th>
+					<th>LAND SIZE(ACRES)</th>
+					<th>PRICE(IN MILLIONS)</th>
 				</tr>
 			</thead>
 			<tbody>

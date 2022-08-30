@@ -1,14 +1,36 @@
 import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 import React, { useState } from "react";
 import { Button } from "reactstrap";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function CreateMultipleRecord({ setShowModal }) {
 	const [file, setFile] = useState();
 
 	const fileReader = new FileReader();
+	const baseURL = "http://localhost:3500/";
 
 	const handleOnChange = (e) => {
 		setFile(e.target.files[0]);
+	};
+
+	const sendToBackend = (records, users) => {
+		const postURL = `${baseURL}seed`;
+		axios
+			.post(postURL, {
+				users,
+				records,
+			})
+			.then((res) => {
+				if (res.status === 201) {
+					toast.success(res.data.message);
+					setShowModal(false);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				toast.error(err.response.data.message);
+			});
 	};
 
 	const csvFileToArray = (string, changeImportedDetails) => {
@@ -23,8 +45,23 @@ export default function CreateMultipleRecord({ setShowModal }) {
 			}, {});
 			return obj;
 		});
-		const headerKeys = Object.keys(Object.assign({}, ...array));
-		changeImportedDetails(headerKeys, array);
+		const landDetails = [];
+		const userDetails = [];
+		array.map((land) => {
+			landDetails.push({
+				referenceNumber: land["Land Title"],
+				size: land["Land Size(Acres)"],
+				price: Object.values(land).pop(),
+			});
+			userDetails.push({
+				name: land["Full Name"],
+				credit: 5000000,
+				role: "buyer",
+			});
+			return null;
+		});
+
+		sendToBackend(landDetails, userDetails);
 		setShowModal(false);
 	};
 
