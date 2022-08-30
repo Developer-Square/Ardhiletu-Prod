@@ -5,7 +5,7 @@ import { Table } from "reactstrap";
 import "./table-record.css";
 
 export default function TableRecords({ tableContent }) {
-	const { changeId } = useContext(UserAndRecordsContext);
+	const { changeId, changeRecordBalance } = useContext(UserAndRecordsContext);
 	return (
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
@@ -21,7 +21,10 @@ export default function TableRecords({ tableContent }) {
 						<tr
 							role='button'
 							key={index}
-							onClick={() => changeId(content["referenceNumber"])}
+							onClick={() => {
+								changeRecordBalance(Object.values(content).pop());
+								changeId(content["referenceNumber"]);
+							}}
 						>
 							{Object.values(content).map((item, index) => (
 								<td

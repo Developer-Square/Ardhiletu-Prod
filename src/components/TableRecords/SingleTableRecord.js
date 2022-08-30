@@ -8,10 +8,29 @@ import "./table-record.css";
 
 export default function SingleTableRecord() {
 	const [singleRecordData, setSingleRecordData] = useState([]);
+	const [user, setUser] = useState({});
+	const [purchasedLand, setPurchasedLand] = useState(false);
 	const [noResults, setNoResults] = useState(false);
-	const { singeRecordId, changeId } = useContext(UserAndRecordsContext);
+	const { singeRecordId, changeId, singleRecordBalance } = useContext(
+		UserAndRecordsContext
+	);
 
 	const baseURL = "http://localhost:3500/";
+
+	const fetchUser = (id) => {
+		const getURL = `${baseURL}users/${id}`;
+		axios
+			.get(getURL)
+			.then((res) => {
+				if (res.status === 200) {
+					const { user } = res.data;
+					setUser(user);
+				}
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
+	};
 
 	const cleanSingleRecordData = (data) => {
 		const cleanedResults = [];
@@ -51,19 +70,33 @@ export default function SingleTableRecord() {
 					toast.error(err.response.data.message);
 				});
 		}
-	}, [singeRecordId]);
+		const userId = localStorage.getItem("currentUser");
+		fetchUser(userId);
+	}, [singeRecordId, purchasedLand]);
 
-	// const handleLandBuy = () => {
-	// 	const balanceToInt = parseInt(userBalance.replaceAll(",", ""));
-	// 	const actualPrice = parseFloat(0.1) * 1000000;
+	const buyLand = () => {
+		const postURL = `${baseURL}transfer/${singeRecordId}/${user._id}`;
+		axios
+			.post(postURL)
+			.then((res) => {
+				if (res.status === 200) {
+					toast.success(res.data.message);
+					setPurchasedLand(true);
+				}
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
+	};
 
-	// 	if (balanceToInt > actualPrice) {
-	// 		const newBalance = balanceToInt - actualPrice;
-	// 		toast.success("Succesfully bought the land");
-	// 	} else {
-	// 		toast.error("Purchased failed, kindly check your balance");
-	// 	}
-	// };
+	const handleLandBuy = () => {
+		if (user.credit > singleRecordBalance) {
+			// TODO: Set up api for deducting user credit from buyers.
+			buyLand();
+		} else {
+			toast.error("Purchased failed, kindly check your balance");
+		}
+	};
 
 	return (
 		<>
@@ -83,7 +116,7 @@ export default function SingleTableRecord() {
 						singleRecordData.map((record, index) => (
 							<tr key={index}>
 								{Object.values(record).map((item, index) => (
-									<td>{item === null ? "NullAddress" : item}</td>
+									<td key={index}>{item === null ? "NullAddress" : item}</td>
 								))}
 							</tr>
 						))
@@ -98,7 +131,11 @@ export default function SingleTableRecord() {
 				>
 					Go Back
 				</Button>
-				<Button color='success' className='animation-on-hover'>
+				<Button
+					color='success'
+					className='animation-on-hover'
+					onClick={handleLandBuy}
+				>
 					Buy
 				</Button>
 			</div>

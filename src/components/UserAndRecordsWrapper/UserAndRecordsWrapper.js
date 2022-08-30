@@ -6,7 +6,7 @@ export default function UserAndRecordsWrapper(props) {
 	const [role, setRole] = useState("");
 	const [id, setID] = useState("");
 	const [records, setRecords] = useState([]);
-	const [userBalance, setUserBalance] = useState("0");
+	const [singleRecordBalance, setRecordBalance] = useState(0);
 	const [importedTableContent, setImportedTableContent] = useState([]);
 
 	function changeUser(role, user) {
@@ -22,8 +22,8 @@ export default function UserAndRecordsWrapper(props) {
 		setImportedTableContent(content);
 	}
 
-	function changeBalance(balance) {
-		setUserBalance(balance);
+	function changeRecordBalance(balance) {
+		setRecordBalance(balance);
 	}
 
 	function changeId(id) {
@@ -36,9 +36,9 @@ export default function UserAndRecordsWrapper(props) {
 				loggedInUser: { role: role, fullName: user },
 				records: records,
 				importedTableContent: importedTableContent,
-				userBalance: userBalance,
+				singleRecordBalance: singleRecordBalance,
 				singeRecordId: id,
-				changeBalance: changeBalance,
+				changeRecordBalance: changeRecordBalance,
 				changeImportedDetails: changeImportedDetails,
 				changeRecords: changeRecords,
 				changeUser: changeUser,

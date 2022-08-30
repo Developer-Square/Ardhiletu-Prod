@@ -27,14 +27,9 @@ import CreateRecordModal from "components/CreateRecords/CreateRecordModal";
 function Dashboard() {
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState("");
-	const {
-		userBalance,
-		changeBalance,
-		loggedInUser,
-		importedTableContent,
-		changeImportedDetails,
-		singeRecordId,
-	} = useContext(UserAndRecordsContext);
+	const [user, setUser] = useState({});
+	const { importedTableContent, changeImportedDetails, singeRecordId } =
+		useContext(UserAndRecordsContext);
 
 	const handleModal = (type) => {
 		setShowModal(true);
@@ -79,8 +74,24 @@ function Dashboard() {
 			});
 	};
 
+	const fetchUser = (id) => {
+		const getURL = `${baseURL}users/${id}`;
+		axios
+			.get(getURL)
+			.then((res) => {
+				if (res.status === 200) {
+					const { user } = res.data;
+					setUser(user);
+				}
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
+	};
+
 	useEffect(() => {
-		changeBalance("2,200,343");
+		const result = localStorage.getItem("currentUser");
+		fetchUser(result);
 		if (importedTableContent.length === 0) {
 			fetchLandRecords();
 		}
@@ -114,12 +125,12 @@ function Dashboard() {
 									<h3 className='mb-2'>Credit Balance</h3>
 									<CardTitle tag='h3'>
 										<i className='tim-icons icon-send text-success' />
-										{userBalance}
+										{user.credit}
 									</CardTitle>
 								</CardHeader>
 							</Card>
 						</Col>
-						{loggedInUser.role === "admin" ? (
+						{user.role === "admin" ? (
 							<Col md='4'>
 								<UncontrolledDropdown group className='float-right'>
 									<DropdownToggle caret color='info' data-toggle='dropdown'>
