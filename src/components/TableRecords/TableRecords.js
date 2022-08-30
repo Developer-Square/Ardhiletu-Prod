@@ -3,13 +3,11 @@ import { Table } from "reactstrap";
 
 import "./table-record.css";
 
-export default function TableRecords({ changeRecords, headers, tableContent }) {
+export default function TableRecords({ changeRecords, tableContent }) {
 	return (
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
 				<tr>
-					<th>FULL NAME</th>
-					<th>NATIONAL ID</th>
 					<th>LAND TITLE</th>
 					<th>LAND SIZE(ACRES)</th>
 					<th>PRICE(IN MILLIONS)</th>

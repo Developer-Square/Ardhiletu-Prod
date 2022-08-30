@@ -13,6 +13,8 @@ import {
 	DropdownItem,
 } from "reactstrap";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 import SingleTableRecord from "components/TableRecords/SingleTableRecord";
 import TableRecords from "components/TableRecords/TableRecords";
@@ -25,23 +27,61 @@ import CreateRecordModal from "components/CreateRecords/CreateRecordModal";
 function Dashboard() {
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState("");
-	const { userBalance, changeBalance, loggedInUser } = useContext(
-		UserAndRecordsContext
-	);
+	const {
+		userBalance,
+		changeBalance,
+		loggedInUser,
+		importedTableContent,
+		changeImportedDetails,
+	} = useContext(UserAndRecordsContext);
 
 	const handleModal = (type) => {
 		setShowModal(true);
 		setModalType(type);
 	};
 
+	const baseURL = "http://localhost:3500/";
+
+	const extractTableContent = (data) => {
+		const results = data.slice(1);
+		const cleanedResults = [];
+		results.map((item) => {
+			cleanedResults.push({
+				referenceNumber: item.referenceNumber,
+				size: item.size,
+				price: item.price,
+			});
+			return null;
+		});
+		changeImportedDetails(cleanedResults);
+	};
+
+	const fetchLandRecords = () => {
+		const postURL = `${baseURL}landRecords`;
+		axios
+			.get(postURL)
+			.then((res) => {
+				if (res.status === 200) {
+					toast.success("Successfully fetched records");
+					extractTableContent(res.data.records);
+				}
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
+	};
+
 	useEffect(() => {
 		changeBalance("2,200,343");
+		if (importedTableContent.length === 0) {
+			fetchLandRecords();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
 		<UserAndRecordsContext.Consumer>
-			{({ records, importedHeaders, importedTableContent, changeRecords }) => (
+			{({ records, importedTableContent, changeRecords }) => (
 				<div className='content'>
 					<ToastContainer
 						position='top-right'
@@ -106,7 +146,6 @@ function Dashboard() {
 								<CardBody>
 									{records.name === "" ? (
 										<TableRecords
-											headers={importedHeaders}
 											tableContent={importedTableContent}
 											changeRecords={changeRecords}
 										/>

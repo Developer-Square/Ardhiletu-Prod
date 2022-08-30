@@ -7,7 +7,6 @@ export default function UserAndRecordsWrapper(props) {
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState("");
 	const [userBalance, setUserBalance] = useState("0");
-	const [importedHeaders, setImportedHeaders] = useState([]);
 	const [importedTableContent, setImportedTableContent] = useState([]);
 
 	function changeUser(role, user) {
@@ -20,8 +19,7 @@ export default function UserAndRecordsWrapper(props) {
 		setPrice(price);
 	}
 
-	function changeImportedDetails(headers, content) {
-		setImportedHeaders(headers);
+	function changeImportedDetails(content) {
 		setImportedTableContent(content);
 	}
 
@@ -34,7 +32,6 @@ export default function UserAndRecordsWrapper(props) {
 			value={{
 				loggedInUser: { role: role, fullName: user },
 				records: { name: name, price: price },
-				importedHeaders: importedHeaders,
 				importedTableContent: importedTableContent,
 				userBalance: userBalance,
 				changeBalance: changeBalance,
