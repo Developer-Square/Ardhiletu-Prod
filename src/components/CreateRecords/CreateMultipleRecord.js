@@ -4,7 +4,10 @@ import { Button } from "reactstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function CreateMultipleRecord({ setShowModal }) {
+export default function CreateMultipleRecord({
+	setShowModal,
+	setCreatedRecords,
+}) {
 	const [file, setFile] = useState();
 
 	const fileReader = new FileReader();
@@ -25,6 +28,7 @@ export default function CreateMultipleRecord({ setShowModal }) {
 				if (res.status === 201) {
 					toast.success(res.data.message);
 					setShowModal(false);
+					setCreatedRecords(true);
 				}
 			})
 			.catch((err) => {

@@ -77,7 +77,10 @@ export default function CreateRecordModal({
 						setPrice={setPrice}
 					/>
 				) : (
-					<CreateMultipleRecord setShowModal={setShowModal} />
+					<CreateMultipleRecord
+						setShowModal={setShowModal}
+						setCreatedRecords={setCreatedRecords}
+					/>
 				)}
 			</ModalBody>
 			{modalType === "single" ? (
