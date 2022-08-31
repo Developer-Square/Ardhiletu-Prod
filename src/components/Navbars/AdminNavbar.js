@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 
@@ -26,13 +26,16 @@ import { toast } from "react-toastify";
 
 import "./admin-navbar.css";
 import { useHistory } from "react-router-dom";
+import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 
 function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const [modalSearch, setmodalSearch] = React.useState(false);
+	const [search, setSearch] = React.useState("");
 	const [role, setRole] = useState("");
 	const [color, setcolor] = React.useState("navbar-transparent");
 	const history = useHistory();
+	const { changeImportedDetails } = useContext(UserAndRecordsContext);
 
 	const baseURL = "http://localhost:3500/";
 
@@ -98,7 +101,31 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 
 	const handleSignOut = () => {
 		localStorage.clear();
+		changeImportedDetails([]);
 		history.push("/");
+	};
+
+	const handleSearch = () => {
+		const getURL = `${baseURL}landRecords/${search}`;
+		axios
+			.get(getURL)
+			.then((res) => {
+				if (res.status === 200) {
+					const { records } = res.data;
+					const searchResults = [
+						{
+							referenceNumber: records[0].referenceNumber,
+							size: records[0].referenceNumber,
+							price: records[0].price,
+						},
+					];
+					changeImportedDetails(searchResults);
+					setmodalSearch(false);
+				}
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
 	};
 	return (
 		<>
@@ -192,7 +219,19 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 				toggle={toggleModalSearch}
 			>
 				<ModalHeader>
-					<Input placeholder='SEARCH' type='text' />
+					<Input
+						placeholder='Search...'
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+						type='text'
+					/>
+					<Button
+						color='primary'
+						className='mr-5 mt-1 px-4'
+						onClick={handleSearch}
+					>
+						Search
+					</Button>
 					<button
 						aria-label='Close'
 						className='close'
