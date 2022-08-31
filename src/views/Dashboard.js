@@ -29,6 +29,7 @@ function Dashboard() {
 	const [modalType, setModalType] = useState("");
 	const [user, setUser] = useState({});
 	const [records, setRecords] = useState([]);
+	const [createdRecords, setCreatedRecords] = useState(false);
 	const [sellerLands, setSellerLands] = useState([]);
 	const { importedTableContent, changeImportedDetails, singeRecordId } =
 		useContext(UserAndRecordsContext);
@@ -117,11 +118,11 @@ function Dashboard() {
 	useEffect(() => {
 		const result = localStorage.getItem("currentUser");
 		fetchUser(result);
-		if (importedTableContent.length === 0) {
+		if (importedTableContent.length === 0 || createdRecords) {
 			fetchLandRecords();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [createdRecords]);
 
 	return (
 		<UserAndRecordsContext.Consumer>
@@ -142,6 +143,8 @@ function Dashboard() {
 						showModal={showModal}
 						setShowModal={setShowModal}
 						modalType={modalType}
+						createdRecords={createdRecords}
+						setCreatedRecords={setCreatedRecords}
 					/>
 					<Row className='d-flex justify-content-between'>
 						<Col md='4'>
@@ -201,20 +204,20 @@ function Dashboard() {
 									)}
 								</CardBody>
 							</Card>
-							<Card>
-								<CardHeader>
-									<CardTitle tag='h3' className='font-weight-bold'>
-										Owned Lands
-									</CardTitle>
-								</CardHeader>
-								<CardBody>
-									{user.role === "seller" ? (
+							{user.role === "seller" ? (
+								<Card>
+									<CardHeader>
+										<CardTitle tag='h3' className='font-weight-bold'>
+											Owned Lands
+										</CardTitle>
+									</CardHeader>
+									<CardBody>
 										<div className='mt-5'>
 											<TableRecords tableContent={sellerLands} />
 										</div>
-									) : null}
-								</CardBody>
-							</Card>
+									</CardBody>
+								</Card>
+							) : null}
 						</Col>
 					</Row>
 				</div>

@@ -2,3 +2,39 @@
     font-size: 13px !important;
     color: #fff !important;
 }
+
+.transaction-code {
+    font-weight: bold;
+    font-size: 13px !important;
+    color: #000;
+}
+
+.body-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.body-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.body-text .title, .body-text-2 .title {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.body-text .text, .body-text-2 .text {
+    font-weight: bold;
+    font-size: 15px;
+    color: #000;
+}
+
+.body-text-2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.block-code {
+    background: rgb(207, 214, 231);
+}

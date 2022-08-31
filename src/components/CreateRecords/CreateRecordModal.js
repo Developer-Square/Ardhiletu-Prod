@@ -10,6 +10,8 @@ export default function CreateRecordModal({
 	showModal,
 	setShowModal,
 	modalType,
+	createdRecords,
+	setCreatedRecords,
 }) {
 	const [landTitle, setLandTitle] = useState("");
 	const [landSize, setLandSize] = useState("");
@@ -29,12 +31,13 @@ export default function CreateRecordModal({
 			.post(postURL, {
 				referenceNumber: landTitle,
 				size: landSize,
-				price,
+				price: parseInt(price),
 			})
 			.then((res) => {
 				if (res.status === 201) {
 					toast.success(res.data.message);
 					clearFields();
+					setCreatedRecords(!createdRecords);
 					setShowModal(false);
 				}
 			})

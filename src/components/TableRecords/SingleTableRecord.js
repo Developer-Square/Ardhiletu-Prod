@@ -1,7 +1,7 @@
 import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Table, Button } from "reactstrap";
+import { Table, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import axios from "axios";
 
 import "./table-record.css";
@@ -11,6 +11,7 @@ export default function SingleTableRecord() {
 	const [user, setUser] = useState({});
 	const [purchasedLand, setPurchasedLand] = useState(false);
 	const [noResults, setNoResults] = useState(false);
+	const [successModal, setSuccessModal] = useState(false);
 	const { singeRecordId, changeId, singleRecordBalance } = useContext(
 		UserAndRecordsContext
 	);
@@ -82,6 +83,7 @@ export default function SingleTableRecord() {
 				if (res.status === 200) {
 					toast.success(res.data.message);
 					setPurchasedLand(true);
+					setSuccessModal(true);
 				}
 			})
 			.catch((err) => {
@@ -98,8 +100,82 @@ export default function SingleTableRecord() {
 		}
 	};
 
+	const extractDate = (timestamp) => {
+		const date = new Date(timestamp);
+		return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+	};
+
+	const extractTime = (timestamp) => {
+		const date = new Date(timestamp);
+		const hours = date.getHours();
+		return `${date.getHours()}.${date.getMinutes()}.${date.getSeconds()} ${
+			hours > 11 ? "PM" : "AM"
+		}`;
+	};
+
 	return (
 		<>
+			<Modal isOpen={successModal} toggle={setSuccessModal}>
+				<ModalHeader>
+					Transaction Complete
+					<button
+						aria-label='Close'
+						className='close'
+						onClick={() => setSuccessModal(false)}
+					>
+						<i className='tim-icons icon-simple-remove' />
+					</button>
+				</ModalHeader>
+				<ModalBody>
+					<div className='transaction-code'>
+						<span>
+							tx:
+							4a60e1ae4e69d786f4f33c8622858a9293fea7995f9eaefc7469f99f9a344c1e
+						</span>
+					</div>
+					<div className='body-container mt-5'>
+						<div className='body-text'>
+							<span className='title'>Date</span>{" "}
+							<span className='text'>
+								{singleRecordData.length
+									? extractDate(singleRecordData.slice(0, 1)[0].date)
+									: null}
+							</span>
+						</div>
+						<div className='body-text'>
+							<span className='title'>Time</span>{" "}
+							<span className='text'>
+								{singleRecordData.length
+									? extractTime(singleRecordData.slice(0, 1)[0].date)
+									: null}
+							</span>
+						</div>
+						<div className='body-text'>
+							<span className='title'>Status</span>{" "}
+							<span className='text'>Success</span>
+						</div>
+					</div>
+					<div className='body-text-2 mt-5 mb-4'>
+						<div className='d-flex flex-column'>
+							<span className='title'>From</span>{" "}
+							<span className='text'>
+								{singleRecordData.length
+									? singleRecordData.slice(0, 1)[0].from
+									: null}
+							</span>
+						</div>
+						<div className='d-flex flex-column'>
+							<span className='title'>To</span>{" "}
+							<span className='text'>
+								{singleRecordData.length
+									? singleRecordData.slice(0, 1)[0].to
+									: null}
+							</span>
+						</div>
+					</div>
+				</ModalBody>
+			</Modal>
+
 			<Table className='tablesorter' responsive>
 				<thead className='text-primary'>
 					<tr>
