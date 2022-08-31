@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 // reactstrap components
 import {
 	Card,
@@ -28,6 +28,8 @@ function Dashboard() {
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState("");
 	const [user, setUser] = useState({});
+	const [records, setRecords] = useState([]);
+	const [sellerLands, setSellerLands] = useState([]);
 	const { importedTableContent, changeImportedDetails, singeRecordId } =
 		useContext(UserAndRecordsContext);
 
@@ -42,12 +44,11 @@ function Dashboard() {
 		const results = data.slice(1);
 		const cleanedResults = [];
 		results.map((item) => {
-			if (!cleanedResults.includes(item.referenceNumber))
-				cleanedResults.push({
-					referenceNumber: item.referenceNumber,
-					size: item.size,
-					price: item.price,
-				});
+			cleanedResults.push({
+				referenceNumber: item.referenceNumber,
+				size: item.size,
+				price: item.price,
+			});
 			return null;
 		});
 		// Remove all the duplicates
@@ -59,6 +60,22 @@ function Dashboard() {
 		changeImportedDetails(uniqueResults);
 	};
 
+	const extractOwnedLands = () => {
+		const results = records.slice(1);
+		const ownedLands = [];
+		results.map((record) => {
+			if (record.ownerId === user._id) {
+				ownedLands.push({
+					referenceNumber: record.referenceNumber,
+					size: record.size,
+					price: record.price,
+				});
+			}
+			return null;
+		});
+		setSellerLands(ownedLands);
+	};
+
 	const fetchLandRecords = () => {
 		const postURL = `${baseURL}landRecords`;
 		axios
@@ -67,6 +84,7 @@ function Dashboard() {
 				if (res.status === 200) {
 					toast.success("Successfully fetched records");
 					extractTableContent(res.data.records);
+					setRecords(res.data.records);
 				}
 			})
 			.catch((err) => {
@@ -88,6 +106,13 @@ function Dashboard() {
 				toast.error(err.response.data.message);
 			});
 	};
+
+	useMemo(() => {
+		if (user.role === "seller") {
+			extractOwnedLands();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [user]);
 
 	useEffect(() => {
 		const result = localStorage.getItem("currentUser");
@@ -174,6 +199,20 @@ function Dashboard() {
 											changeRecords={changeRecords}
 										/>
 									)}
+								</CardBody>
+							</Card>
+							<Card>
+								<CardHeader>
+									<CardTitle tag='h3' className='font-weight-bold'>
+										Owned Lands
+									</CardTitle>
+								</CardHeader>
+								<CardBody>
+									{user.role === "seller" ? (
+										<div className='mt-5'>
+											<TableRecords tableContent={sellerLands} />
+										</div>
+									) : null}
 								</CardBody>
 							</Card>
 						</Col>

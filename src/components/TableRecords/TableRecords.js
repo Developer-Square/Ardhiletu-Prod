@@ -37,7 +37,9 @@ export default function TableRecords({ tableContent }) {
 						</tr>
 					))
 				) : (
-					<tr className='no-results'>No Results. Try Searching...</tr>
+					<tr className='no-results'>
+						<td>No Results. Try Searching...</td>
+					</tr>
 				)}
 			</tbody>
 		</Table>
