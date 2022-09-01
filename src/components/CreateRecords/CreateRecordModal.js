@@ -37,7 +37,7 @@ export default function CreateRecordModal({
 				if (res.status === 201) {
 					toast.success(res.data.message);
 					clearFields();
-					setCreatedRecords(!createdRecords);
+					setCreatedRecords(createdRecords + 1);
 					setShowModal(false);
 				}
 			})

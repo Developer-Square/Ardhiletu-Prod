@@ -29,7 +29,8 @@ function Dashboard() {
 	const [modalType, setModalType] = useState("");
 	const [user, setUser] = useState({});
 	const [records, setRecords] = useState([]);
-	const [createdRecords, setCreatedRecords] = useState(false);
+	const [purchasedLand, setPurchasedLand] = useState(false);
+	const [createdRecords, setCreatedRecords] = useState(0);
 	const [sellerLands, setSellerLands] = useState([]);
 	const { importedTableContent, changeImportedDetails, singeRecordId } =
 		useContext(UserAndRecordsContext);
@@ -118,11 +119,11 @@ function Dashboard() {
 	useEffect(() => {
 		const result = localStorage.getItem("currentUser");
 		fetchUser(result);
-		if (importedTableContent.length === 0 || createdRecords) {
+		if (importedTableContent.length === 0 || createdRecords || purchasedLand) {
 			fetchLandRecords();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [createdRecords]);
+	}, [createdRecords, purchasedLand]);
 
 	return (
 		<UserAndRecordsContext.Consumer>
@@ -200,11 +201,14 @@ function Dashboard() {
 										<SingleTableRecord
 											records={records}
 											changeRecords={changeRecords}
+											purchasedLand={purchasedLand}
+											setPurchasedLand={setPurchasedLand}
+											user={user}
 										/>
 									)}
 								</CardBody>
 							</Card>
-							{user.role === "seller" ? (
+							{user.role === "seller" && singeRecordId === "" ? (
 								<Card>
 									<CardHeader>
 										<CardTitle tag='h3' className='font-weight-bold'>

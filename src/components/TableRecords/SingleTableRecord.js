@@ -6,10 +6,12 @@ import axios from "axios";
 
 import "./table-record.css";
 
-export default function SingleTableRecord() {
+export default function SingleTableRecord({
+	user,
+	purchasedLand,
+	setPurchasedLand,
+}) {
 	const [singleRecordData, setSingleRecordData] = useState([]);
-	const [user, setUser] = useState({});
-	const [purchasedLand, setPurchasedLand] = useState(false);
 	const [noResults, setNoResults] = useState(false);
 	const [successModal, setSuccessModal] = useState(false);
 	const { singeRecordId, changeId, singleRecordBalance } = useContext(
@@ -18,26 +20,12 @@ export default function SingleTableRecord() {
 
 	const baseURL = "http://localhost:3500/";
 
-	const fetchUser = (id) => {
-		const getURL = `${baseURL}users/${id}`;
-		axios
-			.get(getURL)
-			.then((res) => {
-				if (res.status === 200) {
-					const { user } = res.data;
-					setUser(user);
-				}
-			})
-			.catch((err) => {
-				toast.error(err.response.data.message);
-			});
-	};
-
 	const cleanSingleRecordData = (data) => {
 		const cleanedResults = [];
 		// If the data length is one then the land has not yet been
 		// purchased hence set no results.
 		if (data.length > 1) {
+			setNoResults(false);
 			data.map((record, index) => {
 				if (index + 1 < data.length) {
 					cleanedResults.push({
@@ -71,8 +59,6 @@ export default function SingleTableRecord() {
 					toast.error(err.response.data.message);
 				});
 		}
-		const userId = localStorage.getItem("currentUser");
-		fetchUser(userId);
 	}, [singeRecordId, purchasedLand]);
 
 	const buyLand = () => {
@@ -111,6 +97,37 @@ export default function SingleTableRecord() {
 		return `${date.getHours()}.${date.getMinutes()}.${date.getSeconds()} ${
 			hours > 11 ? "PM" : "AM"
 		}`;
+	};
+
+	const convertToTimeAgo = (item) => {
+		if (typeof item === "string") {
+			return item;
+		}
+
+		var seconds = Math.floor((new Date() - item) / 1000);
+
+		var interval = seconds / 31536000;
+
+		if (interval > 1) {
+			return Math.floor(interval) + " years";
+		}
+		interval = seconds / 2592000;
+		if (interval > 1) {
+			return Math.floor(interval) + " months";
+		}
+		interval = seconds / 86400;
+		if (interval > 1) {
+			return Math.floor(interval) + " days";
+		}
+		interval = seconds / 3600;
+		if (interval > 1) {
+			return Math.floor(interval) + " hours";
+		}
+		interval = seconds / 60;
+		if (interval > 1) {
+			return Math.floor(interval) + " minutes";
+		}
+		return Math.floor(seconds) + " seconds";
 	};
 
 	return (
@@ -192,7 +209,9 @@ export default function SingleTableRecord() {
 						singleRecordData.map((record, index) => (
 							<tr key={index}>
 								{Object.values(record).map((item, index) => (
-									<td key={index}>{item === null ? "NullAddress" : item}</td>
+									<td key={index}>
+										{item === null ? "NullAddress" : convertToTimeAgo(item)}
+									</td>
 								))}
 							</tr>
 						))
@@ -203,7 +222,10 @@ export default function SingleTableRecord() {
 				<Button
 					color='danger'
 					className='animation-on-hover'
-					onClick={() => changeId("")}
+					onClick={() => {
+						changeId("");
+						setPurchasedLand(false);
+					}}
 				>
 					Go Back
 				</Button>
