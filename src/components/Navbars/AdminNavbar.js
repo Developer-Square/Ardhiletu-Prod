@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 
@@ -21,21 +21,24 @@ import {
 	InputGroup,
 	Button,
 } from "reactstrap";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 import "./admin-navbar.css";
 import { useHistory } from "react-router-dom";
+import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 
-function AdminNavbar({
-	brandText,
-	sidebarOpened,
-	changeUser,
-	loggedInUser,
-	toggleSidebar,
-}) {
+function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const [modalSearch, setmodalSearch] = React.useState(false);
+	const [search, setSearch] = React.useState("");
+	const [role, setRole] = useState("");
 	const [color, setcolor] = React.useState("navbar-transparent");
 	const history = useHistory();
+	const { changeImportedDetails } = useContext(UserAndRecordsContext);
+
+	const baseURL = "http://localhost:3500/";
+
 	React.useEffect(() => {
 		window.addEventListener("resize", updateColor);
 		// Specify how to clean up after this effect:
@@ -44,9 +47,26 @@ function AdminNavbar({
 		};
 	});
 
+	const fetchUser = (id) => {
+		const getURL = `${baseURL}users/${id}`;
+		axios
+			.get(getURL)
+			.then((res) => {
+				if (res.status === 200) {
+					const { role } = res.data.user;
+					setRole(role);
+				}
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
+	};
+
 	React.useEffect(() => {
 		// Open the search when the dashboard is first loaded.
 		setmodalSearch(true);
+		const user = localStorage.getItem("currentUser");
+		fetchUser(user);
 	}, []);
 	// function that adds color white/transparent to the navbar on resize (this is for the collapse)
 	const updateColor = () => {
@@ -70,9 +90,42 @@ function AdminNavbar({
 		setmodalSearch(!modalSearch);
 	};
 
+	const setUser = (name, role) => {
+		const userData = {
+			name,
+			role,
+			credit: 5000000,
+		};
+		localStorage.setItem("currentUser", JSON.stringify(userData));
+	};
+
 	const handleSignOut = () => {
-		changeUser("");
+		localStorage.clear();
+		changeImportedDetails([]);
 		history.push("/");
+	};
+
+	const handleSearch = () => {
+		const getURL = `${baseURL}landRecords/${search}`;
+		axios
+			.get(getURL)
+			.then((res) => {
+				if (res.status === 200) {
+					const { records } = res.data;
+					const searchResults = [
+						{
+							referenceNumber: records[0].referenceNumber,
+							size: records[0].referenceNumber,
+							price: records[0].price,
+						},
+					];
+					changeImportedDetails(searchResults);
+					setmodalSearch(false);
+				}
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
 	};
 	return (
 		<>
@@ -123,20 +176,16 @@ function AdminNavbar({
 								<DropdownMenu className='dropdown-navbar' right tag='ul'>
 									<NavLink tag='li'>
 										<DropdownItem
-											className={`nav-item ${
-												loggedInUser.role === "admin" ? "active" : ""
-											}`}
-											onClick={() => changeUser("admin", "Anthony Kimani")}
+											className={`nav-item ${role === "admin" ? "active" : ""}`}
+											onClick={() => setUser("Anthony Kimani", "admin")}
 										>
 											Admin
 										</DropdownItem>
 									</NavLink>
 									<NavLink tag='li'>
 										<DropdownItem
-											className={`nav-item ${
-												loggedInUser.role === "buyer" ? "active" : ""
-											}`}
-											onClick={() => changeUser("buyer", "Linton Wambua")}
+											className={`nav-item ${role === "buyer" ? "active" : ""}`}
+											onClick={() => setUser("Linton Wambua", "buyer")}
 										>
 											Buyer
 										</DropdownItem>
@@ -145,9 +194,9 @@ function AdminNavbar({
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												loggedInUser.role === "seller" ? "active" : ""
+												role === "seller" ? "active" : ""
 											}`}
-											onClick={() => changeUser("seller", "Mary Waithaka")}
+											onClick={() => setUser("Mary Waithaka", "seller")}
 										>
 											Seller
 										</DropdownItem>
@@ -170,7 +219,19 @@ function AdminNavbar({
 				toggle={toggleModalSearch}
 			>
 				<ModalHeader>
-					<Input placeholder='SEARCH' type='text' />
+					<Input
+						placeholder='Search...'
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+						type='text'
+					/>
+					<Button
+						color='primary'
+						className='mr-5 mt-1 px-4'
+						onClick={handleSearch}
+					>
+						Search
+					</Button>
 					<button
 						aria-label='Close'
 						className='close'

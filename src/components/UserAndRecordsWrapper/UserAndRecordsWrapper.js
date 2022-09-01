@@ -4,10 +4,9 @@ import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
 export default function UserAndRecordsWrapper(props) {
 	const [user, setUser] = useState("");
 	const [role, setRole] = useState("");
-	const [name, setName] = useState("");
-	const [price, setPrice] = useState("");
-	const [userBalance, setUserBalance] = useState("0");
-	const [importedHeaders, setImportedHeaders] = useState([]);
+	const [id, setID] = useState("");
+	const [records, setRecords] = useState([]);
+	const [singleRecordBalance, setRecordBalance] = useState(0);
 	const [importedTableContent, setImportedTableContent] = useState([]);
 
 	function changeUser(role, user) {
@@ -15,32 +14,35 @@ export default function UserAndRecordsWrapper(props) {
 		setUser(user);
 	}
 
-	function changeRecords(name, price) {
-		setName(name);
-		setPrice(price);
+	function changeRecords(records) {
+		setRecords(records);
 	}
 
-	function changeImportedDetails(headers, content) {
-		setImportedHeaders(headers);
+	function changeImportedDetails(content) {
 		setImportedTableContent(content);
 	}
 
-	function changeBalance(balance) {
-		setUserBalance(balance);
+	function changeRecordBalance(balance) {
+		setRecordBalance(balance);
+	}
+
+	function changeId(id) {
+		setID(id);
 	}
 
 	return (
 		<UserAndRecordsContext.Provider
 			value={{
 				loggedInUser: { role: role, fullName: user },
-				records: { name: name, price: price },
-				importedHeaders: importedHeaders,
+				records: records,
 				importedTableContent: importedTableContent,
-				userBalance: userBalance,
-				changeBalance: changeBalance,
+				singleRecordBalance: singleRecordBalance,
+				singeRecordId: id,
+				changeRecordBalance: changeRecordBalance,
 				changeImportedDetails: changeImportedDetails,
 				changeRecords: changeRecords,
 				changeUser: changeUser,
+				changeId: changeId,
 			}}
 		>
 			{props.children}

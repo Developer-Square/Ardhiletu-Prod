@@ -1,16 +1,18 @@
-import React from "react";
+import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
+import React, { useContext } from "react";
 import { Table } from "reactstrap";
 
 import "./table-record.css";
 
-export default function TableRecords({ changeRecords, headers, tableContent }) {
+export default function TableRecords({ tableContent }) {
+	const { changeId, changeRecordBalance } = useContext(UserAndRecordsContext);
 	return (
 		<Table className='tablesorter' responsive>
 			<thead className='text-primary'>
 				<tr>
-					{headers.map((title, index) => (
-						<th key={index}>{title}</th>
-					))}
+					<th>LAND TITLE</th>
+					<th>LAND SIZE(ACRES)</th>
+					<th>PRICE(IN MILLIONS)</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -19,12 +21,10 @@ export default function TableRecords({ changeRecords, headers, tableContent }) {
 						<tr
 							role='button'
 							key={index}
-							onClick={() =>
-								changeRecords(
-									content["Full Name"],
-									Object.values(content).pop()
-								)
-							}
+							onClick={() => {
+								changeRecordBalance(Object.values(content).pop());
+								changeId(content["referenceNumber"]);
+							}}
 						>
 							{Object.values(content).map((item, index) => (
 								<td
@@ -37,7 +37,9 @@ export default function TableRecords({ changeRecords, headers, tableContent }) {
 						</tr>
 					))
 				) : (
-					<tr className='no-results'>No Results. Try Searching...</tr>
+					<tr className='no-results'>
+						<td>No Results. Try Searching...</td>
+					</tr>
 				)}
 			</tbody>
 		</Table>
