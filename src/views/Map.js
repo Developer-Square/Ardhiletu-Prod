@@ -1,309 +1,58 @@
-import React from "react";
+/* eslint-disable no-undef */
+import React, { Component } from "react";
 
-// reactstrap components
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import "./dashboard.css";
 
-const MapWrapper = () => {
-	const mapRef = React.useRef(null);
-	React.useEffect(() => {
-		let google = window.google;
-		let map = mapRef.current;
-		let lat = "40.748817";
-		let lng = "-73.985428";
-		const myLatlng = new google.maps.LatLng(lat, lng);
-		const mapOptions = {
-			scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
-			styles: [
-				{
-					elementType: "geometry",
-					stylers: [
-						{
-							color: "#1d2c4d",
-						},
-					],
-				},
-				{
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#8ec3b9",
-						},
-					],
-				},
-				{
-					elementType: "labels.text.stroke",
-					stylers: [
-						{
-							color: "#1a3646",
-						},
-					],
-				},
-				{
-					featureType: "administrative.country",
-					elementType: "geometry.stroke",
-					stylers: [
-						{
-							color: "#4b6878",
-						},
-					],
-				},
-				{
-					featureType: "administrative.land_parcel",
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#64779e",
-						},
-					],
-				},
-				{
-					featureType: "administrative.province",
-					elementType: "geometry.stroke",
-					stylers: [
-						{
-							color: "#4b6878",
-						},
-					],
-				},
-				{
-					featureType: "landscape.man_made",
-					elementType: "geometry.stroke",
-					stylers: [
-						{
-							color: "#334e87",
-						},
-					],
-				},
-				{
-					featureType: "landscape.natural",
-					elementType: "geometry",
-					stylers: [
-						{
-							color: "#023e58",
-						},
-					],
-				},
-				{
-					featureType: "poi",
-					elementType: "geometry",
-					stylers: [
-						{
-							color: "#283d6a",
-						},
-					],
-				},
-				{
-					featureType: "poi",
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#6f9ba5",
-						},
-					],
-				},
-				{
-					featureType: "poi",
-					elementType: "labels.text.stroke",
-					stylers: [
-						{
-							color: "#1d2c4d",
-						},
-					],
-				},
-				{
-					featureType: "poi.park",
-					elementType: "geometry.fill",
-					stylers: [
-						{
-							color: "#023e58",
-						},
-					],
-				},
-				{
-					featureType: "poi.park",
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#3C7680",
-						},
-					],
-				},
-				{
-					featureType: "road",
-					elementType: "geometry",
-					stylers: [
-						{
-							color: "#304a7d",
-						},
-					],
-				},
-				{
-					featureType: "road",
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#98a5be",
-						},
-					],
-				},
-				{
-					featureType: "road",
-					elementType: "labels.text.stroke",
-					stylers: [
-						{
-							color: "#1d2c4d",
-						},
-					],
-				},
-				{
-					featureType: "road.highway",
-					elementType: "geometry",
-					stylers: [
-						{
-							color: "#2c6675",
-						},
-					],
-				},
-				{
-					featureType: "road.highway",
-					elementType: "geometry.fill",
-					stylers: [
-						{
-							color: "#9d2a80",
-						},
-					],
-				},
-				{
-					featureType: "road.highway",
-					elementType: "geometry.stroke",
-					stylers: [
-						{
-							color: "#9d2a80",
-						},
-					],
-				},
-				{
-					featureType: "road.highway",
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#b0d5ce",
-						},
-					],
-				},
-				{
-					featureType: "road.highway",
-					elementType: "labels.text.stroke",
-					stylers: [
-						{
-							color: "#023e58",
-						},
-					],
-				},
-				{
-					featureType: "transit",
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#98a5be",
-						},
-					],
-				},
-				{
-					featureType: "transit",
-					elementType: "labels.text.stroke",
-					stylers: [
-						{
-							color: "#1d2c4d",
-						},
-					],
-				},
-				{
-					featureType: "transit.line",
-					elementType: "geometry.fill",
-					stylers: [
-						{
-							color: "#283d6a",
-						},
-					],
-				},
-				{
-					featureType: "transit.station",
-					elementType: "geometry",
-					stylers: [
-						{
-							color: "#3a4762",
-						},
-					],
-				},
-				{
-					featureType: "water",
-					elementType: "geometry",
-					stylers: [
-						{
-							color: "#0e1626",
-						},
-					],
-				},
-				{
-					featureType: "water",
-					elementType: "labels.text.fill",
-					stylers: [
-						{
-							color: "#4e6d70",
-						},
-					],
-				},
-			],
-		};
+class Map extends Component {
+	state = {
+		defaultCenter: { lat: -1.286389, lng: 36.817223 },
+		markers: [
+			{ lat: -1.2758, lng: 36.823 },
+			{
+				lat: -4.04374,
+				lng: 39.658871,
+			},
+			{
+				lat: -1.85238,
+				lng: 36.77683,
+			},
+		],
+	};
 
-		map = new google.maps.Map(map, mapOptions);
+	componentDidMount() {
+		document.body.classList.add("is-map");
+		this.handleAttachGoogleMap();
+	}
 
-		const marker = new google.maps.Marker({
-			position: myLatlng,
-			map: map,
-			animation: google.maps.Animation.DROP,
-			title: "BLK Design System PRO React!",
+	componentWillUnmount() {
+		document.body.classList.remove("is-map");
+	}
+
+	handleAttachGoogleMap = () => {
+		const { defaultCenter } = this.state;
+		this.map = new google.maps.Map(document.getElementById("google-map"), {
+			center: defaultCenter,
+			zoom: 9,
 		});
 
-		const contentString =
-			'<div class="info-window-content"><h2>BLK Dashboard React</h2>' +
-			"<p>A freebie Admin for ReactStrap, Bootstrap, React, and React Hooks.</p></div>";
+		setTimeout(() => {
+			this.handleDrawMarkers();
+		}, 2000);
+	};
 
-		const infowindow = new google.maps.InfoWindow({
-			content: contentString,
+	handleDrawMarkers = () => {
+		const { markers } = this.state;
+		markers.forEach((marker) => {
+			new google.maps.Marker({
+				position: marker,
+				map: this.map,
+			});
 		});
+	};
 
-		google.maps.event.addListener(marker, "click", function () {
-			infowindow.open(map, marker);
-		});
-	}, []);
-	return <div ref={mapRef} />;
-};
-
-function Map() {
-	return (
-		<>
-			<div className='content'>
-				<Row>
-					<Col md='12'>
-						<Card className='card-plain'>
-							<CardHeader>Google Maps</CardHeader>
-							<CardBody>
-								<div
-									id='map'
-									className='map'
-									style={{ position: "relative", overflow: "hidden" }}
-								>
-									<MapWrapper />
-								</div>
-							</CardBody>
-						</Card>
-					</Col>
-				</Row>
-			</div>
-		</>
-	);
+	render() {
+		return <div id='google-map'>Map</div>;
+	}
 }
 
 export default Map;
