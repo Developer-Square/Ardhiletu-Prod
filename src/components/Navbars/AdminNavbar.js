@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import classNames from 'classnames';
 
 // reactstrap components
 import {
@@ -20,30 +20,30 @@ import {
 	ModalHeader,
 	InputGroup,
 	Button,
-} from "reactstrap";
-import axios from "axios";
-import { toast } from "react-toastify";
+} from 'reactstrap';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-import "./admin-navbar.css";
-import { useHistory } from "react-router-dom";
-import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
+import './admin-navbar.css';
+import { useHistory } from 'react-router-dom';
+import { UserAndRecordsContext } from 'contexts/UserAndRecordsContext';
 
 function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const [modalSearch, setmodalSearch] = React.useState(false);
-	const [search, setSearch] = React.useState("");
-	const [role, setRole] = useState("");
-	const [color, setcolor] = React.useState("navbar-transparent");
+	const [search, setSearch] = React.useState('');
+	const [role, setRole] = useState('');
+	const [color, setcolor] = React.useState('navbar-transparent');
 	const history = useHistory();
 	const { changeImportedDetails } = useContext(UserAndRecordsContext);
 
-	const baseURL = "http://localhost:3500/";
+	const baseURL = 'http://localhost:3500/';
 
 	React.useEffect(() => {
-		window.addEventListener("resize", updateColor);
+		window.addEventListener('resize', updateColor);
 		// Specify how to clean up after this effect:
 		return function cleanup() {
-			window.removeEventListener("resize", updateColor);
+			window.removeEventListener('resize', updateColor);
 		};
 	});
 
@@ -65,23 +65,23 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 	React.useEffect(() => {
 		// Open the search when the dashboard is first loaded.
 		setmodalSearch(true);
-		const user = localStorage.getItem("currentUser");
+		const user = localStorage.getItem('currentUser');
 		fetchUser(user);
 	}, []);
 	// function that adds color white/transparent to the navbar on resize (this is for the collapse)
 	const updateColor = () => {
 		if (window.innerWidth < 993 && collapseOpen) {
-			setcolor("bg-white");
+			setcolor('bg-white');
 		} else {
-			setcolor("navbar-transparent");
+			setcolor('navbar-transparent');
 		}
 	};
 	// this function opens and closes the collapse on small devices
 	const toggleCollapse = () => {
 		if (collapseOpen) {
-			setcolor("navbar-transparent");
+			setcolor('navbar-transparent');
 		} else {
-			setcolor("bg-white");
+			setcolor('bg-white');
 		}
 		setcollapseOpen(!collapseOpen);
 	};
@@ -96,13 +96,13 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 			role,
 			credit: 5000000,
 		};
-		localStorage.setItem("currentUser", JSON.stringify(userData));
+		localStorage.setItem('currentUser', JSON.stringify(userData));
 	};
 
 	const handleSignOut = () => {
 		localStorage.clear();
 		changeImportedDetails([]);
-		history.push("/");
+		history.push('/');
 	};
 
 	const handleSearch = () => {
@@ -129,11 +129,11 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 	};
 	return (
 		<>
-			<Navbar className={classNames("navbar-absolute", color)} expand='lg'>
+			<Navbar className={classNames('navbar-absolute', color)} expand='lg'>
 				<Container fluid>
 					<div className='navbar-wrapper'>
 						<div
-							className={classNames("navbar-toggle d-inline", {
+							className={classNames('navbar-toggle d-inline', {
 								toggled: sidebarOpened,
 							})}
 						>
@@ -143,8 +143,17 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 								<span className='navbar-toggler-bar bar3' />
 							</NavbarToggler>
 						</div>
-						<NavbarBrand href='#pablo' onClick={(e) => e.preventDefault()}>
-							{brandText}
+						<NavbarBrand
+							href='#pablo'
+							style={{
+								fontFamily: 'Arial, Helvetica, sans-serif',
+								fontSize: '25px',
+								fontWeight: 'bold',
+								letterSpacing: '5px',
+							}}
+							onClick={(e) => e.preventDefault()}
+						>
+							Ardhiletu
 						</NavbarBrand>
 					</div>
 					<NavbarToggler onClick={toggleCollapse}>
@@ -168,7 +177,7 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 									onClick={(e) => e.preventDefault()}
 								>
 									<div className='photo'>
-										<img alt='...' src={require("assets/img/anime3.png")} />
+										<img alt='...' src={require('assets/img/anime3.png')} />
 									</div>
 									<b className='caret d-none d-lg-block d-xl-block' />
 									<p className='d-lg-none'>Log out</p>
@@ -176,16 +185,16 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 								<DropdownMenu className='dropdown-navbar' right tag='ul'>
 									<NavLink tag='li'>
 										<DropdownItem
-											className={`nav-item ${role === "admin" ? "active" : ""}`}
-											onClick={() => setUser("Anthony Kimani", "admin")}
+											className={`nav-item ${role === 'admin' ? 'active' : ''}`}
+											onClick={() => setUser('Anthony Kimani', 'admin')}
 										>
 											Admin
 										</DropdownItem>
 									</NavLink>
 									<NavLink tag='li'>
 										<DropdownItem
-											className={`nav-item ${role === "buyer" ? "active" : ""}`}
-											onClick={() => setUser("Linton Wambua", "buyer")}
+											className={`nav-item ${role === 'buyer' ? 'active' : ''}`}
+											onClick={() => setUser('Linton Wambua', 'buyer')}
 										>
 											Buyer
 										</DropdownItem>
@@ -194,9 +203,9 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
 									<NavLink tag='li'>
 										<DropdownItem
 											className={`nav-item ${
-												role === "seller" ? "active" : ""
+												role === 'seller' ? 'active' : ''
 											}`}
-											onClick={() => setUser("Mary Waithaka", "seller")}
+											onClick={() => setUser('Mary Waithaka', 'seller')}
 										>
 											Seller
 										</DropdownItem>
