@@ -1,14 +1,14 @@
-import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
-import React from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { UserAndRecordsContext } from 'contexts/UserAndRecordsContext';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-import "./landing.css";
+import './landing.css';
 
 export default function Landing() {
 	const history = useHistory();
-	const baseURL = "http://localhost:3500/";
+	const baseURL = 'http://localhost:3500/';
 
 	const createUser = (name, role) => {
 		const postURL = `${baseURL}users`;
@@ -20,11 +20,12 @@ export default function Landing() {
 			})
 			.then((res) => {
 				if (res.status === 201) {
-					localStorage.setItem("currentUser", res.data.id);
-					history.push("/admin");
+					localStorage.setItem('currentUser', res.data.id);
+					history.push('/admin');
 				}
 			})
 			.catch((err) => {
+				console.log(err);
 				toast.error(err.response.data.message);
 			});
 	};
@@ -46,21 +47,21 @@ export default function Landing() {
 							<div className='user-btn'>
 								<button
 									className='btn'
-									onClick={() => handleRouting("Anthony Kimani", "admin")}
+									onClick={() => handleRouting('Anthony Kimani', 'admin')}
 								></button>
 								<span>Admin</span>
 							</div>
 							<div className='user-btn'>
 								<button
 									className='btn btn-2'
-									onClick={() => handleRouting("Linton Wambua", "buyer")}
+									onClick={() => handleRouting('Linton Wambua', 'buyer')}
 								></button>
 								<span>Buyer</span>
 							</div>
 							<div className='user-btn'>
 								<button
 									className='btn btn-3'
-									onClick={() => handleRouting("Mary Waithaka", "seller")}
+									onClick={() => handleRouting('Mary Waithaka', 'seller')}
 								></button>
 								<span>Seller</span>
 							</div>
