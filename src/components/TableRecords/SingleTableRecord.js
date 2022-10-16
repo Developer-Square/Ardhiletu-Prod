@@ -1,10 +1,10 @@
-import { UserAndRecordsContext } from "contexts/UserAndRecordsContext";
-import React, { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { Table, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
-import axios from "axios";
+import { UserAndRecordsContext } from 'contexts/UserAndRecordsContext';
+import React, { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { Table, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import axios from 'axios';
 
-import "./table-record.css";
+import './table-record.css';
 
 export default function SingleTableRecord({
 	user,
@@ -12,50 +12,47 @@ export default function SingleTableRecord({
 	setPurchasedLand,
 }) {
 	const [singleRecordData, setSingleRecordData] = useState([]);
-	const [noResults, setNoResults] = useState(false);
 	const [successModal, setSuccessModal] = useState(false);
 	const { singeRecordId, changeId, singleRecordBalance } = useContext(
 		UserAndRecordsContext
 	);
 
-	const baseURL = "http://localhost:3500/";
+	const baseURL = 'http://localhost:3500/';
 
 	const cleanSingleRecordData = (data) => {
 		const cleanedResults = [];
 		// If the data length is one then the land has not yet been
 		// purchased hence set no results.
-		if (data.length > 1) {
-			setNoResults(false);
+		if (data.length) {
 			data.map((record, index) => {
-				if (index + 1 < data.length) {
+				if (index + 1 <= data.length) {
 					cleanedResults.push({
-						event: index === 0 ? "Minted" : "Transfer",
-						from: record.owner,
-						to: data[index + 1].owner,
-						date: data[index + 1].timestamp,
+						event: index === 0 ? 'Minted' : 'Transfer',
+						from: index === 0 ? 'Null Address' : data[index - 1].owner,
+						to: data[index].owner,
+						date: data[index].timestamp,
 					});
 				}
 				return null;
 			});
 			const reversedArray = cleanedResults.reverse();
 			setSingleRecordData(reversedArray);
-		} else {
-			setNoResults(true);
 		}
 	};
 
 	useEffect(() => {
-		if (singeRecordId !== "") {
+		if (singeRecordId !== '') {
 			const getURL = `${baseURL}landRecords/${singeRecordId}`;
 			axios
 				.get(getURL)
 				.then((res) => {
 					if (res.status === 200) {
-						toast.success("Successfully fetched single record");
+						toast.success('Successfully fetched single record');
 						cleanSingleRecordData(res.data.records);
 					}
 				})
 				.catch((err) => {
+					console.log(err);
 					toast.error(err.response.data.message);
 				});
 		}
@@ -82,7 +79,7 @@ export default function SingleTableRecord({
 			// TODO: Set up api for deducting user credit from buyers.
 			buyLand();
 		} else {
-			toast.error("Purchased failed, kindly check your balance");
+			toast.error('Purchased failed, kindly check your balance');
 		}
 	};
 
@@ -95,12 +92,12 @@ export default function SingleTableRecord({
 		const date = new Date(timestamp);
 		const hours = date.getHours();
 		return `${date.getHours()}.${date.getMinutes()}.${date.getSeconds()} ${
-			hours > 11 ? "PM" : "AM"
+			hours > 11 ? 'PM' : 'AM'
 		}`;
 	};
 
 	const convertToTimeAgo = (item) => {
-		if (typeof item === "string") {
+		if (typeof item === 'string') {
 			return item;
 		}
 
@@ -109,25 +106,25 @@ export default function SingleTableRecord({
 		var interval = seconds / 31536000;
 
 		if (interval > 1) {
-			return Math.floor(interval) + " years";
+			return Math.floor(interval) + ' years';
 		}
 		interval = seconds / 2592000;
 		if (interval > 1) {
-			return Math.floor(interval) + " months";
+			return Math.floor(interval) + ' months';
 		}
 		interval = seconds / 86400;
 		if (interval > 1) {
-			return Math.floor(interval) + " days";
+			return Math.floor(interval) + ' days';
 		}
 		interval = seconds / 3600;
 		if (interval > 1) {
-			return Math.floor(interval) + " hours";
+			return Math.floor(interval) + ' hours';
 		}
 		interval = seconds / 60;
 		if (interval > 1) {
-			return Math.floor(interval) + " minutes";
+			return Math.floor(interval) + ' minutes';
 		}
-		return Math.floor(seconds) + " seconds";
+		return Math.floor(seconds) + ' seconds';
 	};
 
 	return (
@@ -152,7 +149,7 @@ export default function SingleTableRecord({
 					</div>
 					<div className='body-container mt-5'>
 						<div className='body-text'>
-							<span className='title'>Date</span>{" "}
+							<span className='title'>Date</span>{' '}
 							<span className='text'>
 								{singleRecordData.length
 									? extractDate(singleRecordData.slice(0, 1)[0].date)
@@ -160,7 +157,7 @@ export default function SingleTableRecord({
 							</span>
 						</div>
 						<div className='body-text'>
-							<span className='title'>Time</span>{" "}
+							<span className='title'>Time</span>{' '}
 							<span className='text'>
 								{singleRecordData.length
 									? extractTime(singleRecordData.slice(0, 1)[0].date)
@@ -168,13 +165,13 @@ export default function SingleTableRecord({
 							</span>
 						</div>
 						<div className='body-text'>
-							<span className='title'>Status</span>{" "}
+							<span className='title'>Status</span>{' '}
 							<span className='text'>Success</span>
 						</div>
 					</div>
 					<div className='body-text-2 mt-5 mb-4'>
 						<div className='d-flex flex-column'>
-							<span className='title'>From</span>{" "}
+							<span className='title'>From</span>{' '}
 							<span className='text'>
 								{singleRecordData.length
 									? singleRecordData.slice(0, 1)[0].from
@@ -182,7 +179,7 @@ export default function SingleTableRecord({
 							</span>
 						</div>
 						<div className='d-flex flex-column'>
-							<span className='title'>To</span>{" "}
+							<span className='title'>To</span>{' '}
 							<span className='text'>
 								{singleRecordData.length
 									? singleRecordData.slice(0, 1)[0].to
@@ -203,19 +200,17 @@ export default function SingleTableRecord({
 					</tr>
 				</thead>
 				<tbody>
-					{noResults ? (
-						<tr className='no-results'>No Results...</tr>
-					) : singleRecordData.length > 0 ? (
-						singleRecordData.map((record, index) => (
-							<tr key={index}>
-								{Object.values(record).map((item, index) => (
-									<td key={index}>
-										{item === null ? "NullAddress" : convertToTimeAgo(item)}
-									</td>
-								))}
-							</tr>
-						))
-					) : null}
+					{singleRecordData.length > 0
+						? singleRecordData.map((record, index) => (
+								<tr key={index}>
+									{Object.values(record).map((item, index) => (
+										<td key={index}>
+											{item === null ? 'NullAddress' : convertToTimeAgo(item)}
+										</td>
+									))}
+								</tr>
+						  ))
+						: null}
 				</tbody>
 			</Table>
 			<div className='d-flex justify-content-end mt-4'>
@@ -223,7 +218,7 @@ export default function SingleTableRecord({
 					color='danger'
 					className='animation-on-hover'
 					onClick={() => {
-						changeId("");
+						changeId('');
 						setPurchasedLand(false);
 					}}
 				>
