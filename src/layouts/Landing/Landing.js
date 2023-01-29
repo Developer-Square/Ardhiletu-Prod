@@ -8,7 +8,7 @@ import './landing.css';
 
 export default function Landing() {
   const history = useHistory();
-  const baseURL = 'http://localhost:3500/';
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   const createUser = (name, role) => {
     const postURL = `${baseURL}users`;

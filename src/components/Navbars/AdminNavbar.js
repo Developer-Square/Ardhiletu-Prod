@@ -37,7 +37,7 @@ function AdminNavbar({ brandText, sidebarOpened, toggleSidebar }) {
   const history = useHistory();
   const { changeImportedDetails } = useContext(UserAndRecordsContext);
 
-  const baseURL = 'http://localhost:3500/';
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   React.useEffect(() => {
     window.addEventListener('resize', updateColor);
